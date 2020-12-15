@@ -1,0 +1,7 @@
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|28f184de-ae52-4fd2-8ffe-d4b77b1d880a
+C:\Users\bernw\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|6a63e687-47a9-4628-b769-3e137ec658dc
+C:\Users\bernw\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Downloads ( 4.1).cyprj|09b91f2d-43a8-4b2a-9bb2-0cbdb49effb8
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|c699e10f-5d39-47be-bd4c-4627ea21a606
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|e10ec56f-0ef1-4a17-a788-16247f5c059a
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|f3bdb961-b95e-4592-b77f-41f9750e0390
+C:\Users\bernw\Documents\PSoC Creator\RemlichtTentamenv2\RemlichtTentamenv2.cydsn\RemlichtTentamenv2.cyprj|9acce027-7054-42fb-ad84-9f8759f5b719

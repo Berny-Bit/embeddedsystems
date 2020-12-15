@@ -1,0 +1,2430 @@
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"main.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.ButtonIsPressed,"ax",%progbits
+  20              		.align	2
+  21              		.global	ButtonIsPressed
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	ButtonIsPressed, %function
+  25              	ButtonIsPressed:
+  26              	.LFB63:
+  27              		.file 1 "main.c"
+   1:main.c        **** /* ========================================
+   2:main.c        **** 
+   3:main.c        **** Tentamen Embedded Systems 2
+   4:main.c        **** Datum: 6 november
+   5:main.c        **** Tijd: 14:30 - 17:00
+   6:main.c        **** 
+   7:main.c        **** 
+   8:main.c        **** Inleiding
+   9:main.c        **** =========
+  10:main.c        **** In deze tentamenopgave ga je aan de slag met een systeem om de rem- en
+  11:main.c        **** achterlichten van een auto aan te sturen. De remlichten worden hierbij
+  12:main.c        **** voorgesteld met het blauwe LEDje die op het PSoC bordje zit ingebouwd.
+  13:main.c        **** Het rempedaal is de button die op het bordje zit. Voor de normale
+  14:main.c        **** achterlichten van de auto moet je een extra LED aansluiten op het bordje.
+  15:main.c        **** 
+  16:main.c        **** BELANGRIJK: LEVER ALS JE KLAAR BENT EEN ZIP FILE IN VAN JE COMPLETE PROJECT!!
+  17:main.c        **** 
+  18:main.c        **** Verpak dus de directory jouwproject.cysdn in een zipfile en lever die in op moodle.
+  19:main.c        **** 
+  20:main.c        **** Succes!
+  21:main.c        **** 
+  22:main.c        **** 
+  23:main.c        **** Opgaven:
+  24:main.c        **** 
+  25:main.c        **** Opgave 1: Getting started
+  26:main.c        **** ========
+  27:main.c        **** 1a:
+  28:main.c        **** Maak een nieuw (leeg) project aan voor je bordje. Let op dat je de
+  29:main.c        **** correcte target hardware gebruikt (jouw type bordje). Noem dit project
+  30:main.c        **** "RemlichtTentamen" en kijk goed waar dit opgeslagen wordt. Kopieer de inhoud
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 2
+
+
+  31:main.c        **** van deze opgavefile in de main.c file van je project. Bouw het project en
+  32:main.c        **** kijk of je het kunt runnen en debuggen.
+  33:main.c        **** 
+  34:main.c        **** 1b:
+  35:main.c        **** Vul je naam en studentnummer in.
+  36:main.c        **** NOGMAALS: Lever aan het eind een zip-file in van je complete project!
+  37:main.c        **** Dus "RemlichtTentamen.cydsn.zip"
+  38:main.c        **** 
+  39:main.c        **** Naam: Bernward Balochie
+  40:main.c        **** Studentnummer: 500753320
+  41:main.c        **** 
+  42:main.c        **** Opgave 2: Remlicht
+  43:main.c        **** ==================
+  44:main.c        **** In deze opgave ga je het basis-remlicht implementeren.
+  45:main.c        **** 
+  46:main.c        **** 2a:
+  47:main.c        **** Maak in je topdesign een outputpin en een inputpin aan. De outputpin link
+  48:main.c        **** je aan het blauwe ledje op je bordje en de input pin aan de button op je bordje
+  49:main.c        **** (neem de SW1 button die middenop je bordje zit en niet de SW3 (reset)button die
+  50:main.c        **** aan de rand van je bordje zit!). Configureer de inputpin als "resistive pull-up".
+  51:main.c        **** 
+  52:main.c        **** 2b:
+  53:main.c        **** Wat betekent het dat de input pin als "resistive pull-up" is geconigureerd?
+  54:main.c        **** 
+  55:main.c        **** 
+  56:main.c        **** Antwoord: Dat betekend dat de input pin bij de rust stand een 1 heeft, en als ie ingedukt wordt,
+  57:main.c        **** krijgt ie een 0.
+  58:main.c        **** 
+  59:main.c        **** 2c:
+  60:main.c        **** Vul onderstaande code aan zodat het ledje functioneert als remlicht: bij het
+  61:main.c        **** indrukken van de button (het rempedaal) moet het ledje (je remlicht) aangaan en
+  62:main.c        **** bij het loslaten weer uit.
+  63:main.c        **** 
+  64:main.c        **** Opgave 3: Knipperen
+  65:main.c        **** ===================
+  66:main.c        **** We willen nu een extra functionaliteit toevoegen om wat meer aandacht te trekken
+  67:main.c        **** als er geremd wordt. Voordat de remlichten constant gaan branden willen we ze daarom
+  68:main.c        **** eerst één seconde lang laten knipperen.
+  69:main.c        **** 
+  70:main.c        **** 3a:
+  71:main.c        **** Pas de code aan zodat bij het indrukken van het rempedaal het remlicht eerst een aantal
+  72:main.c        **** milliseconden (duration) met een bepaalde frequentie (BLINK_FREQUENCY) knippert. Gebruik
+  73:main.c        **** hiervoor een for-loop en een delay functie.
+  74:main.c        **** Test het uit door BLINK_FREQUENCY bijvoorbeeld op 5 te zetten en dan de functie aan te roepen
+  75:main.c        **** met 1000 waardoor de led precies één seconde lang 5 keer aan en uit moet gaan.
+  76:main.c        **** 
+  77:main.c        **** 3b:
+  78:main.c        **** De oplossing voor het knipperen bij opgave 3a met een loopje en de delay functie is niet de beste
+  79:main.c        **** oplossing. Wat voor andere oplossing zou er mogelijk zijn? Leg uit waarom dat een betere zou zijn.
+  80:main.c        **** 
+  81:main.c        **** Antwoord: Een pwm gebruiken waardoor je de dutycyle mee kan aanpassen.
+  82:main.c        **** 
+  83:main.c        **** 
+  84:main.c        **** Opgave 4: Achterlicht
+  85:main.c        **** =====================
+  86:main.c        **** Naast een remlicht willen we ook een gewoon achterlicht hebben. Deze moet natuurlijk wel
+  87:main.c        **** minder fel branden dan een remlicht. Hiervoor ga je een PWM gebruiken.
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 3
+
+
+  88:main.c        **** 
+  89:main.c        **** 4a:
+  90:main.c        **** Sluit zelf nog een led aan op je bordje. Configureer een outputpin in je topdesign voor dit
+  91:main.c        **** ledje en teken daar ook in hoe je het ledje hebt aangesloten.
+  92:main.c        **** 
+  93:main.c        **** 4b:
+  94:main.c        **** Configureer een PWM in je topdesign, inclusief een ingaande clock. Sluit de uitgang van de PWM
+  95:main.c        **** aan op de outputpin voor je ledje.
+  96:main.c        **** 
+  97:main.c        **** 4c:
+  98:main.c        **** We willen het ledje op ongeveer halve sterkte laten branden zonder dat we een flikkering in
+  99:main.c        **** het ledje zien. Configureer hiervoor de clock en PWM. Geef de waardes van de volgende parameters
+ 100:main.c        **** die je hebt geconfigureerd met een korte toelichting:
+ 101:main.c        **** 
+ 102:main.c        **** Frequentie ingaande clock: 15khz
+ 103:main.c        **** Resolution PWM:8-bit
+ 104:main.c        **** Period PWM:255
+ 105:main.c        **** CMP value PWM:80
+ 106:main.c        **** 
+ 107:main.c        **** Toelichting: 15khz/255 =...hertz. Met 8 bits kan ik van 0 tot 255 tellen. De compare value wordt ve
+ 108:main.c        **** de resolutie, als de resolutie hoger is dan de compare value, dan krijgt ie een 1, als het minder i
+ 109:main.c        **** Er wordt dan van 255 tot 0 geteld en iedere keer word die vergelijking gemaakt. Daarmee kan ik mijn
+ 110:main.c        **** toepassen.
+ 111:main.c        **** 
+ 112:main.c        **** 4d:
+ 113:main.c        **** Pas de code aan zodat de achterlichten aangezet worden (op halve kracht).
+ 114:main.c        **** 
+ 115:main.c        **** 
+ 116:main.c        **** Opgave 5: Automatisch achterlicht
+ 117:main.c        **** =================================
+ 118:main.c        **** We willen nu het systeem zo aanpassen dat de achterlichten automatisch aan en uitgezet worden
+ 119:main.c        **** al naar gelang het buiten licht of donker is. Hiertoe gaan we de LDR (light-dependent resistor)
+ 120:main.c        **** gebruiken die in het kitje zit (een klein rond schijfje waar een soort spiraaltje op getekend lijkt
+ 121:main.c        **** Als je deze LDR niet hebt of niet aan de praat krijgt kun je ook de met de hand regelbare weerstand
+ 122:main.c        **** gebruiken (levert wel minder punten op).
+ 123:main.c        **** 
+ 124:main.c        **** 5a:
+ 125:main.c        **** Sluit de LDR aan tussen de 5 volt en een analoge inputpin. Teken dit ook in je topdesign. Plaats en
+ 126:main.c        **** configureer ook een AD converter (ADC_SAR) om de waardes van de LDR in een digitale waarde om te ku
+ 127:main.c        **** zetten. Gebruik voor de ADC_SAR de volgende settings:
+ 128:main.c        **** 
+ 129:main.c        **** Input range: Vssa to Vdda (Single Ended)
+ 130:main.c        **** Reference: Internal Vref
+ 131:main.c        **** 
+ 132:main.c        **** Alternatief: sluit niet de LDR maar de regelbare weesrtand aan.
+ 133:main.c        **** 
+ 134:main.c        **** 5b:
+ 135:main.c        **** Vul de functie XXXX aan met code zodat de ADC uitgelezen wordt. Bepaal bijvoorbeeld
+ 136:main.c        **** met behulp van de debugger wat de waarden zijn die worden uitgelezen als de LDR wordt
+ 137:main.c        **** afgedekt en als deze wel licht vangt.
+ 138:main.c        **** 
+ 139:main.c        **** Afgedekt: 1
+ 140:main.c        **** Onafgedekt: 0
+ 141:main.c        **** 
+ 142:main.c        **** Alternatief: geef de min en max die je uit de regelbare weerstand leest.
+ 143:main.c        **** 
+ 144:main.c        **** 5c:
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 4
+
+
+ 145:main.c        **** Pas nu de code aan zodat de achterlichten automtisch aangaan als het donker(der) wordt
+ 146:main.c        **** en weer uitgaan als het weer licht(er) wordt. Welke grenswaarde heb je hiervoor gebruikt
+ 147:main.c        **** en waarom?
+ 148:main.c        **** 
+ 149:main.c        **** Grenswaarde:
+ 150:main.c        **** 
+ 151:main.c        **** Toelichting:
+ 152:main.c        **** 
+ 153:main.c        **** 5d:
+ 154:main.c        **** Niet iedere auto is voorzien van een lichtsensor om automatisch te bepalen of de achterlichten aan
+ 155:main.c        **** of uit moeten. We willen de code daarom aanpassen zodat we eenvoudig deze functionaliteit wel
+ 156:main.c        **** of niet meenemen in ons programma. Pas de code zo aan dat we door middel van macros voor
+ 157:main.c        **** voorwaardelijke compilatie de code wel of niet meenemen in ons programma.
+ 158:main.c        **** 
+ 159:main.c        **** Opgave 6: Theorie vragen
+ 160:main.c        **** ========================
+ 161:main.c        **** 6a Leg uit wat de volatile modifier doet en wanneer je deze gebruikt.
+ 162:main.c        **** antwoord: De compiler die haalt elke variabele die niet van waarde verandert weg. Met volatile modi
+ 163:main.c        **** je aan dat de compiler de variabele niet moet verwijderen bij optimalisatie omdat de waarde nog kan
+ 164:main.c        **** 
+ 165:main.c        **** 6b Leg uit wat de const modifier doet en wanneer je deze gebruikt.
+ 166:main.c        **** antwoord: Met de const modifier geef je aan dat de compiler de variabele die niet van waarde verand
+ 167:main.c        **** optimaliseren.
+ 168:main.c        **** 
+ 169:main.c        **** 6c Gebruikt de Arm processor de stack of registers voor lokale variabelen?
+ 170:main.c        **** antwoord: de stack
+ 171:main.c        **** 
+ 172:main.c        **** 6d Wat is een dangling pointer?
+ 173:main.c        **** antwoord: een pointer die niet geinitialiseerd is.
+ 174:main.c        **** 
+ 175:main.c        **** 6e Wordt een C enumerate type opgeslagen als tekst, integer of floating point?
+ 176:main.c        **** antwoord: Als tekst.
+ 177:main.c        **** 
+ 178:main.c        **** * ========================================
+ 179:main.c        **** */
+ 180:main.c        **** #include "project.h"
+ 181:main.c        **** 
+ 182:main.c        **** #ifdef LIGHT_SENSOR_PRESENT
+ 183:main.c        ****     int DaylightIsOn(void);
+ 184:main.c        ****     #endif
+ 185:main.c        **** 
+ 186:main.c        **** #define LIGHT_SENSOR_PRESENT        /* Voor opgave 5d */
+ 187:main.c        **** #define DAYLIGHT_THRESHOLD 0x01   /* Voor opgave 5c */
+ 188:main.c        **** 
+ 189:main.c        **** #define BUTTON_RELEASED 0
+ 190:main.c        **** #define BUTTON_PRESSED  1
+ 191:main.c        **** 
+ 192:main.c        **** #define BRAKE_OFF 0
+ 193:main.c        **** #define BRAKE_BLINK 1
+ 194:main.c        **** #define BRAKE_ON 2
+ 195:main.c        **** 
+ 196:main.c        **** #define REAR_OFF 0
+ 197:main.c        **** #define REAR_ON 1
+ 198:main.c        **** 
+ 199:main.c        **** #define BLINK_FREQUENCY 5        /* Voor opgave 3a */
+ 200:main.c        **** 
+ 201:main.c        **** int button_mode = BUTTON_RELEASED;
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 5
+
+
+ 202:main.c        **** int brake_mode = BRAKE_OFF;
+ 203:main.c        **** int rear_mode = REAR_OFF;
+ 204:main.c        **** 
+ 205:main.c        **** int ButtonIsPressed(void)
+ 206:main.c        **** {
+  28              		.loc 1 206 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 08B5     		push	{r3, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 3, -8
+  35              		.cfi_offset 14, -4
+ 207:main.c        ****     /* bepaal of de knop is ingedrukt of niet en retourneer dat */
+ 208:main.c        ****     /* TODO opgave 2    
+ 209:main.c        ****     return XXXX */
+ 210:main.c        ****     if(rempedaal_Read()==1){
+  36              		.loc 1 210 0
+  37 0002 FFF7FEFF 		bl	rempedaal_Read
+  38              	.LVL0:
+  39 0006 0128     		cmp	r0, #1
+  40 0008 03D0     		beq	.L3
+ 211:main.c        ****      return 0;
+ 212:main.c        ****     }else if(rempedaal_Read()==0){
+  41              		.loc 1 212 0
+  42 000a FFF7FEFF 		bl	rempedaal_Read
+  43              	.LVL1:
+ 213:main.c        ****      return 1;
+  44              		.loc 1 213 0
+  45 000e 0120     		movs	r0, #1
+  46 0010 08BD     		pop	{r3, pc}
+  47              	.L3:
+ 211:main.c        ****      return 0;
+  48              		.loc 1 211 0
+  49 0012 0020     		movs	r0, #0
+ 214:main.c        ****     }
+ 215:main.c        ****     
+ 216:main.c        ****     return 1; /* tijdelijke returnwaarde */
+ 217:main.c        **** }
+  50              		.loc 1 217 0
+  51 0014 08BD     		pop	{r3, pc}
+  52              		.cfi_endproc
+  53              	.LFE63:
+  54              		.size	ButtonIsPressed, .-ButtonIsPressed
+  55 0016 00BF     		.section	.text.SetButtonMode,"ax",%progbits
+  56              		.align	2
+  57              		.global	SetButtonMode
+  58              		.thumb
+  59              		.thumb_func
+  60              		.type	SetButtonMode, %function
+  61              	SetButtonMode:
+  62              	.LFB64:
+ 218:main.c        **** 
+ 219:main.c        **** void SetButtonMode(int mode)
+ 220:main.c        **** {
+  63              		.loc 1 220 0
+  64              		.cfi_startproc
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 6
+
+
+  65              		@ args = 0, pretend = 0, frame = 0
+  66              		@ frame_needed = 0, uses_anonymous_args = 0
+  67              		@ link register save eliminated.
+  68              	.LVL2:
+ 221:main.c        **** 	button_mode = mode;
+  69              		.loc 1 221 0
+  70 0000 014B     		ldr	r3, .L6
+  71 0002 1860     		str	r0, [r3]
+  72 0004 7047     		bx	lr
+  73              	.L7:
+  74 0006 00BF     		.align	2
+  75              	.L6:
+  76 0008 00000000 		.word	.LANCHOR0
+  77              		.cfi_endproc
+  78              	.LFE64:
+  79              		.size	SetButtonMode, .-SetButtonMode
+  80              		.section	.text.GetButtonMode,"ax",%progbits
+  81              		.align	2
+  82              		.global	GetButtonMode
+  83              		.thumb
+  84              		.thumb_func
+  85              		.type	GetButtonMode, %function
+  86              	GetButtonMode:
+  87              	.LFB65:
+ 222:main.c        **** }
+ 223:main.c        **** 
+ 224:main.c        **** int GetButtonMode(void)
+ 225:main.c        **** {
+  88              		.loc 1 225 0
+  89              		.cfi_startproc
+  90              		@ args = 0, pretend = 0, frame = 0
+  91              		@ frame_needed = 0, uses_anonymous_args = 0
+  92              		@ link register save eliminated.
+ 226:main.c        **** 	return button_mode;
+ 227:main.c        **** }
+  93              		.loc 1 227 0
+  94 0000 014B     		ldr	r3, .L9
+  95 0002 1868     		ldr	r0, [r3]
+  96 0004 7047     		bx	lr
+  97              	.L10:
+  98 0006 00BF     		.align	2
+  99              	.L9:
+ 100 0008 00000000 		.word	.LANCHOR0
+ 101              		.cfi_endproc
+ 102              	.LFE65:
+ 103              		.size	GetButtonMode, .-GetButtonMode
+ 104              		.section	.text.SetBrakeMode,"ax",%progbits
+ 105              		.align	2
+ 106              		.global	SetBrakeMode
+ 107              		.thumb
+ 108              		.thumb_func
+ 109              		.type	SetBrakeMode, %function
+ 110              	SetBrakeMode:
+ 111              	.LFB66:
+ 228:main.c        **** 
+ 229:main.c        **** void SetBrakeMode(int mode)
+ 230:main.c        **** {
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 7
+
+
+ 112              		.loc 1 230 0
+ 113              		.cfi_startproc
+ 114              		@ args = 0, pretend = 0, frame = 0
+ 115              		@ frame_needed = 0, uses_anonymous_args = 0
+ 116              		@ link register save eliminated.
+ 117              	.LVL3:
+ 231:main.c        **** 	brake_mode = mode;
+ 118              		.loc 1 231 0
+ 119 0000 014B     		ldr	r3, .L12
+ 120 0002 5860     		str	r0, [r3, #4]
+ 121 0004 7047     		bx	lr
+ 122              	.L13:
+ 123 0006 00BF     		.align	2
+ 124              	.L12:
+ 125 0008 00000000 		.word	.LANCHOR0
+ 126              		.cfi_endproc
+ 127              	.LFE66:
+ 128              		.size	SetBrakeMode, .-SetBrakeMode
+ 129              		.section	.text.GetBrakeMode,"ax",%progbits
+ 130              		.align	2
+ 131              		.global	GetBrakeMode
+ 132              		.thumb
+ 133              		.thumb_func
+ 134              		.type	GetBrakeMode, %function
+ 135              	GetBrakeMode:
+ 136              	.LFB67:
+ 232:main.c        **** }
+ 233:main.c        **** 
+ 234:main.c        **** int GetBrakeMode(void)
+ 235:main.c        **** {
+ 137              		.loc 1 235 0
+ 138              		.cfi_startproc
+ 139              		@ args = 0, pretend = 0, frame = 0
+ 140              		@ frame_needed = 0, uses_anonymous_args = 0
+ 141              		@ link register save eliminated.
+ 236:main.c        **** 	return brake_mode;
+ 237:main.c        **** }
+ 142              		.loc 1 237 0
+ 143 0000 014B     		ldr	r3, .L15
+ 144 0002 5868     		ldr	r0, [r3, #4]
+ 145 0004 7047     		bx	lr
+ 146              	.L16:
+ 147 0006 00BF     		.align	2
+ 148              	.L15:
+ 149 0008 00000000 		.word	.LANCHOR0
+ 150              		.cfi_endproc
+ 151              	.LFE67:
+ 152              		.size	GetBrakeMode, .-GetBrakeMode
+ 153              		.section	.text.SwitchBrakeLights,"ax",%progbits
+ 154              		.align	2
+ 155              		.global	SwitchBrakeLights
+ 156              		.thumb
+ 157              		.thumb_func
+ 158              		.type	SwitchBrakeLights, %function
+ 159              	SwitchBrakeLights:
+ 160              	.LFB68:
+ 238:main.c        **** 
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 8
+
+
+ 239:main.c        **** void SwitchBrakeLights(int mode)
+ 240:main.c        **** {
+ 161              		.loc 1 240 0
+ 162              		.cfi_startproc
+ 163              		@ args = 0, pretend = 0, frame = 0
+ 164              		@ frame_needed = 0, uses_anonymous_args = 0
+ 165              	.LVL4:
+ 166 0000 08B5     		push	{r3, lr}
+ 167              		.cfi_def_cfa_offset 8
+ 168              		.cfi_offset 3, -8
+ 169              		.cfi_offset 14, -4
+ 241:main.c        ****     /* Zet de remlichten aan of uit afhankelijk van de mode */
+ 242:main.c        ****     
+ 243:main.c        ****     /* TODO Opgave 2 */
+ 244:main.c        ****     if(mode == BRAKE_ON){
+ 170              		.loc 1 244 0
+ 171 0002 0228     		cmp	r0, #2
+ 172 0004 03D1     		bne	.L18
+ 245:main.c        ****      remlicht_Write(1);
+ 173              		.loc 1 245 0
+ 174 0006 0120     		movs	r0, #1
+ 175              	.LVL5:
+ 176 0008 FFF7FEFF 		bl	remlicht_Write
+ 177              	.LVL6:
+ 178 000c 08BD     		pop	{r3, pc}
+ 179              	.LVL7:
+ 180              	.L18:
+ 246:main.c        ****     }else if(mode == BRAKE_OFF){
+ 181              		.loc 1 246 0
+ 182 000e 08B9     		cbnz	r0, .L17
+ 247:main.c        ****      remlicht_Write(0);
+ 183              		.loc 1 247 0
+ 184 0010 FFF7FEFF 		bl	remlicht_Write
+ 185              	.LVL8:
+ 186              	.L17:
+ 187 0014 08BD     		pop	{r3, pc}
+ 188              		.cfi_endproc
+ 189              	.LFE68:
+ 190              		.size	SwitchBrakeLights, .-SwitchBrakeLights
+ 191 0016 00BF     		.section	.text.FlashBrakeLights,"ax",%progbits
+ 192              		.align	2
+ 193              		.global	FlashBrakeLights
+ 194              		.thumb
+ 195              		.thumb_func
+ 196              		.type	FlashBrakeLights, %function
+ 197              	FlashBrakeLights:
+ 198              	.LFB69:
+ 248:main.c        ****     }
+ 249:main.c        **** }
+ 250:main.c        **** 
+ 251:main.c        **** void FlashBrakeLights(int duration)
+ 252:main.c        **** {
+ 199              		.loc 1 252 0
+ 200              		.cfi_startproc
+ 201              		@ args = 0, pretend = 0, frame = 0
+ 202              		@ frame_needed = 0, uses_anonymous_args = 0
+ 203              	.LVL9:
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 9
+
+
+ 204 0000 38B5     		push	{r3, r4, r5, lr}
+ 205              		.cfi_def_cfa_offset 16
+ 206              		.cfi_offset 3, -16
+ 207              		.cfi_offset 4, -12
+ 208              		.cfi_offset 5, -8
+ 209              		.cfi_offset 14, -4
+ 210 0002 0546     		mov	r5, r0
+ 211              	.LVL10:
+ 212              	.LBB2:
+ 253:main.c        ****     /* Knipper de remlichten aan/uit voor duration ms op BLINK_FREQUENCY frequentie */
+ 254:main.c        ****     
+ 255:main.c        ****     // TODO opgave 3
+ 256:main.c        **** 	for (int i=0; i<BLINK_FREQUENCY; i++)
+ 213              		.loc 1 256 0
+ 214 0004 0024     		movs	r4, #0
+ 215 0006 0CE0     		b	.L22
+ 216              	.LVL11:
+ 217              	.L23:
+ 257:main.c        **** 	{
+ 258:main.c        ****         remlicht_Write(1);
+ 218              		.loc 1 258 0 discriminator 3
+ 219 0008 0120     		movs	r0, #1
+ 220 000a FFF7FEFF 		bl	remlicht_Write
+ 221              	.LVL12:
+ 259:main.c        ****         CyDelay(duration);
+ 222              		.loc 1 259 0 discriminator 3
+ 223 000e 2846     		mov	r0, r5
+ 224 0010 FFF7FEFF 		bl	CyDelay
+ 225              	.LVL13:
+ 260:main.c        ****         remlicht_Write(0);
+ 226              		.loc 1 260 0 discriminator 3
+ 227 0014 0020     		movs	r0, #0
+ 228 0016 FFF7FEFF 		bl	remlicht_Write
+ 229              	.LVL14:
+ 261:main.c        ****         CyDelay(duration);
+ 230              		.loc 1 261 0 discriminator 3
+ 231 001a 2846     		mov	r0, r5
+ 232 001c FFF7FEFF 		bl	CyDelay
+ 233              	.LVL15:
+ 256:main.c        **** 	{
+ 234              		.loc 1 256 0 discriminator 3
+ 235 0020 0134     		adds	r4, r4, #1
+ 236              	.LVL16:
+ 237              	.L22:
+ 256:main.c        **** 	{
+ 238              		.loc 1 256 0 is_stmt 0 discriminator 1
+ 239 0022 042C     		cmp	r4, #4
+ 240 0024 F0DD     		ble	.L23
+ 241              	.LBE2:
+ 262:main.c        **** 	}
+ 263:main.c        ****     
+ 264:main.c        **** }
+ 242              		.loc 1 264 0 is_stmt 1
+ 243 0026 38BD     		pop	{r3, r4, r5, pc}
+ 244              		.cfi_endproc
+ 245              	.LFE69:
+ 246              		.size	FlashBrakeLights, .-FlashBrakeLights
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 10
+
+
+ 247              		.section	.text.SetRearMode,"ax",%progbits
+ 248              		.align	2
+ 249              		.global	SetRearMode
+ 250              		.thumb
+ 251              		.thumb_func
+ 252              		.type	SetRearMode, %function
+ 253              	SetRearMode:
+ 254              	.LFB70:
+ 265:main.c        **** 
+ 266:main.c        **** void SetRearMode(int mode)
+ 267:main.c        **** {
+ 255              		.loc 1 267 0
+ 256              		.cfi_startproc
+ 257              		@ args = 0, pretend = 0, frame = 0
+ 258              		@ frame_needed = 0, uses_anonymous_args = 0
+ 259              		@ link register save eliminated.
+ 260              	.LVL17:
+ 268:main.c        **** 	rear_mode = mode;
+ 261              		.loc 1 268 0
+ 262 0000 014B     		ldr	r3, .L26
+ 263 0002 9860     		str	r0, [r3, #8]
+ 264 0004 7047     		bx	lr
+ 265              	.L27:
+ 266 0006 00BF     		.align	2
+ 267              	.L26:
+ 268 0008 00000000 		.word	.LANCHOR0
+ 269              		.cfi_endproc
+ 270              	.LFE70:
+ 271              		.size	SetRearMode, .-SetRearMode
+ 272              		.section	.text.GetRearMode,"ax",%progbits
+ 273              		.align	2
+ 274              		.global	GetRearMode
+ 275              		.thumb
+ 276              		.thumb_func
+ 277              		.type	GetRearMode, %function
+ 278              	GetRearMode:
+ 279              	.LFB71:
+ 269:main.c        **** }
+ 270:main.c        **** 
+ 271:main.c        **** int GetRearMode(void)
+ 272:main.c        **** {
+ 280              		.loc 1 272 0
+ 281              		.cfi_startproc
+ 282              		@ args = 0, pretend = 0, frame = 0
+ 283              		@ frame_needed = 0, uses_anonymous_args = 0
+ 284              		@ link register save eliminated.
+ 273:main.c        **** 	return rear_mode;
+ 274:main.c        **** }
+ 285              		.loc 1 274 0
+ 286 0000 014B     		ldr	r3, .L29
+ 287 0002 9868     		ldr	r0, [r3, #8]
+ 288 0004 7047     		bx	lr
+ 289              	.L30:
+ 290 0006 00BF     		.align	2
+ 291              	.L29:
+ 292 0008 00000000 		.word	.LANCHOR0
+ 293              		.cfi_endproc
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 11
+
+
+ 294              	.LFE71:
+ 295              		.size	GetRearMode, .-GetRearMode
+ 296              		.section	.text.DaylightIsOn,"ax",%progbits
+ 297              		.align	2
+ 298              		.global	DaylightIsOn
+ 299              		.thumb
+ 300              		.thumb_func
+ 301              		.type	DaylightIsOn, %function
+ 302              	DaylightIsOn:
+ 303              	.LFB72:
+ 275:main.c        **** 
+ 276:main.c        **** volatile int value;
+ 277:main.c        **** 
+ 278:main.c        **** int DaylightIsOn(void)
+ 279:main.c        **** {
+ 304              		.loc 1 279 0
+ 305              		.cfi_startproc
+ 306              		@ args = 0, pretend = 0, frame = 0
+ 307              		@ frame_needed = 0, uses_anonymous_args = 0
+ 308 0000 08B5     		push	{r3, lr}
+ 309              		.cfi_def_cfa_offset 8
+ 310              		.cfi_offset 3, -8
+ 311              		.cfi_offset 14, -4
+ 280:main.c        ****     /* bepaal of het licht of donker is en retourneer dat */
+ 281:main.c        ****     value = ADC_SAR_1_GetResult8();
+ 312              		.loc 1 281 0
+ 313 0002 FFF7FEFF 		bl	ADC_SAR_1_GetResult8
+ 314              	.LVL18:
+ 315 0006 054B     		ldr	r3, .L35
+ 316 0008 1860     		str	r0, [r3]
+ 282:main.c        ****     // TODO Opgave 5 uitlezen licht sensor
+ 283:main.c        ****     if(value < DAYLIGHT_THRESHOLD){
+ 317              		.loc 1 283 0
+ 318 000a 1B68     		ldr	r3, [r3]
+ 319 000c 002B     		cmp	r3, #0
+ 320 000e 03DD     		ble	.L33
+ 284:main.c        ****     return 0;
+ 285:main.c        ****     }else if(value > DAYLIGHT_THRESHOLD){
+ 321              		.loc 1 285 0
+ 322 0010 024B     		ldr	r3, .L35
+ 323 0012 1B68     		ldr	r3, [r3]
+ 286:main.c        ****     return 1;
+ 324              		.loc 1 286 0
+ 325 0014 0120     		movs	r0, #1
+ 326 0016 08BD     		pop	{r3, pc}
+ 327              	.L33:
+ 284:main.c        ****     return 0;
+ 328              		.loc 1 284 0
+ 329 0018 0020     		movs	r0, #0
+ 287:main.c        ****     }
+ 288:main.c        **** 	//return (value > DAYLIGHT_THRESHOLD); 
+ 289:main.c        ****     
+ 290:main.c        ****     return 1; /* tijdelijke returnwaarde */
+ 291:main.c        **** }
+ 330              		.loc 1 291 0
+ 331 001a 08BD     		pop	{r3, pc}
+ 332              	.L36:
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 12
+
+
+ 333              		.align	2
+ 334              	.L35:
+ 335 001c 00000000 		.word	value
+ 336              		.cfi_endproc
+ 337              	.LFE72:
+ 338              		.size	DaylightIsOn, .-DaylightIsOn
+ 339              		.section	.text.SwitchRearLights,"ax",%progbits
+ 340              		.align	2
+ 341              		.global	SwitchRearLights
+ 342              		.thumb
+ 343              		.thumb_func
+ 344              		.type	SwitchRearLights, %function
+ 345              	SwitchRearLights:
+ 346              	.LFB73:
+ 292:main.c        **** 
+ 293:main.c        **** void SwitchRearLights(int mode)
+ 294:main.c        **** {
+ 347              		.loc 1 294 0
+ 348              		.cfi_startproc
+ 349              		@ args = 0, pretend = 0, frame = 0
+ 350              		@ frame_needed = 0, uses_anonymous_args = 0
+ 351              	.LVL19:
+ 352 0000 08B5     		push	{r3, lr}
+ 353              		.cfi_def_cfa_offset 8
+ 354              		.cfi_offset 3, -8
+ 355              		.cfi_offset 14, -4
+ 295:main.c        ****     /* set de achterlichten (half) aan of uit afhankelijk van mode */
+ 296:main.c        ****     
+ 297:main.c        ****     /* TODO opgave 4 */
+ 298:main.c        ****     if(mode == REAR_ON){
+ 356              		.loc 1 298 0
+ 357 0002 0128     		cmp	r0, #1
+ 358 0004 05D1     		bne	.L38
+ 299:main.c        ****     achterlicht_Write(1);
+ 359              		.loc 1 299 0
+ 360 0006 FFF7FEFF 		bl	achterlicht_Write
+ 361              	.LVL20:
+ 300:main.c        ****     PWM_achterlicht_WriteCompare(50);
+ 362              		.loc 1 300 0
+ 363 000a 3220     		movs	r0, #50
+ 364 000c FFF7FEFF 		bl	PWM_achterlicht_WriteCompare
+ 365              	.LVL21:
+ 366 0010 08BD     		pop	{r3, pc}
+ 367              	.LVL22:
+ 368              	.L38:
+ 301:main.c        ****     }else if(mode == REAR_OFF){
+ 369              		.loc 1 301 0
+ 370 0012 20B9     		cbnz	r0, .L37
+ 302:main.c        ****     achterlicht_Write(0);
+ 371              		.loc 1 302 0
+ 372 0014 FFF7FEFF 		bl	achterlicht_Write
+ 373              	.LVL23:
+ 303:main.c        ****     PWM_achterlicht_WriteCompare(0);
+ 374              		.loc 1 303 0
+ 375 0018 0020     		movs	r0, #0
+ 376 001a FFF7FEFF 		bl	PWM_achterlicht_WriteCompare
+ 377              	.LVL24:
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 13
+
+
+ 378              	.L37:
+ 379 001e 08BD     		pop	{r3, pc}
+ 380              		.cfi_endproc
+ 381              	.LFE73:
+ 382              		.size	SwitchRearLights, .-SwitchRearLights
+ 383              		.section	.text.main,"ax",%progbits
+ 384              		.align	2
+ 385              		.global	main
+ 386              		.thumb
+ 387              		.thumb_func
+ 388              		.type	main, %function
+ 389              	main:
+ 390              	.LFB74:
+ 304:main.c        ****     }
+ 305:main.c        **** }
+ 306:main.c        **** 
+ 307:main.c        **** int main(void)
+ 308:main.c        **** {
+ 391              		.loc 1 308 0
+ 392              		.cfi_startproc
+ 393              		@ Volatile: function does not return.
+ 394              		@ args = 0, pretend = 0, frame = 0
+ 395              		@ frame_needed = 0, uses_anonymous_args = 0
+ 396 0000 08B5     		push	{r3, lr}
+ 397              		.cfi_def_cfa_offset 8
+ 398              		.cfi_offset 3, -8
+ 399              		.cfi_offset 14, -4
+ 309:main.c        **** 	CyGlobalIntEnable; /* Enable global interrupts. */
+ 400              		.loc 1 309 0
+ 401              		.syntax unified
+ 402              	@ 309 "main.c" 1
+ 403 0002 62B6     		CPSIE   i
+ 404              	@ 0 "" 2
+ 310:main.c        **** 
+ 311:main.c        **** 	/* Plaats hier je initialisatiecode (e.g. MyInst_Start()) */
+ 312:main.c        ****     PWM_achterlicht_Start();
+ 405              		.loc 1 312 0
+ 406              		.thumb
+ 407              		.syntax unified
+ 408 0004 FFF7FEFF 		bl	PWM_achterlicht_Start
+ 409              	.LVL25:
+ 313:main.c        ****     Clock_achterlicht_Start();
+ 410              		.loc 1 313 0
+ 411 0008 FFF7FEFF 		bl	Clock_achterlicht_Start
+ 412              	.LVL26:
+ 314:main.c        ****     ADC_SAR_1_Start();
+ 413              		.loc 1 314 0
+ 414 000c FFF7FEFF 		bl	ADC_SAR_1_Start
+ 415              	.LVL27:
+ 416              	.L42:
+ 315:main.c        **** 	for(;;)
+ 316:main.c        **** 	{
+ 317:main.c        **** 	/* Plaats hier je main code */
+ 318:main.c        ****        SetRearMode(REAR_ON); 
+ 417              		.loc 1 318 0
+ 418 0010 0120     		movs	r0, #1
+ 419 0012 FFF7FEFF 		bl	SetRearMode
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 14
+
+
+ 420              	.LVL28:
+ 319:main.c        ****        SwitchRearLights(REAR_ON);
+ 421              		.loc 1 319 0
+ 422 0016 0120     		movs	r0, #1
+ 423 0018 FFF7FEFF 		bl	SwitchRearLights
+ 424              	.LVL29:
+ 320:main.c        ****         if (ButtonIsPressed()) /* Check of de User Button is ingedrukt */
+ 425              		.loc 1 320 0
+ 426 001c FFF7FEFF 		bl	ButtonIsPressed
+ 427              	.LVL30:
+ 428 0020 78B1     		cbz	r0, .L43
+ 321:main.c        ****         {
+ 322:main.c        ****             if (GetButtonMode() == BUTTON_RELEASED) /* button was net nog niet ingedrukt */
+ 429              		.loc 1 322 0
+ 430 0022 FFF7FEFF 		bl	GetButtonMode
+ 431              	.LVL31:
+ 432 0026 C8B9     		cbnz	r0, .L44
+ 323:main.c        ****             {
+ 324:main.c        ****                 SetButtonMode(BUTTON_PRESSED);
+ 433              		.loc 1 324 0
+ 434 0028 0120     		movs	r0, #1
+ 435 002a FFF7FEFF 		bl	SetButtonMode
+ 436              	.LVL32:
+ 325:main.c        **** 				SetBrakeMode(BRAKE_ON);
+ 437              		.loc 1 325 0
+ 438 002e 0220     		movs	r0, #2
+ 439 0030 FFF7FEFF 		bl	SetBrakeMode
+ 440              	.LVL33:
+ 326:main.c        ****                 //SetRearMode(REAR_ON);
+ 327:main.c        **** 				FlashBrakeLights(100); //Voor opgave 3: 
+ 441              		.loc 1 327 0
+ 442 0034 6420     		movs	r0, #100
+ 443 0036 FFF7FEFF 		bl	FlashBrakeLights
+ 444              	.LVL34:
+ 328:main.c        **** 				SwitchBrakeLights(BRAKE_ON);
+ 445              		.loc 1 328 0
+ 446 003a 0220     		movs	r0, #2
+ 447 003c FFF7FEFF 		bl	SwitchBrakeLights
+ 448              	.LVL35:
+ 449 0040 0CE0     		b	.L44
+ 450              	.L43:
+ 329:main.c        ****                // SwitchRearLights(REAR_ON);
+ 330:main.c        ****             }
+ 331:main.c        ****         }
+ 332:main.c        ****         else
+ 333:main.c        ****         {
+ 334:main.c        ****             if (GetButtonMode() == BUTTON_PRESSED) /* button was net nog ingedrukt */
+ 451              		.loc 1 334 0
+ 452 0042 FFF7FEFF 		bl	GetButtonMode
+ 453              	.LVL36:
+ 454 0046 0128     		cmp	r0, #1
+ 455 0048 08D1     		bne	.L44
+ 335:main.c        ****             {
+ 336:main.c        ****                 SetButtonMode(BUTTON_RELEASED);
+ 456              		.loc 1 336 0
+ 457 004a 0020     		movs	r0, #0
+ 458 004c FFF7FEFF 		bl	SetButtonMode
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 15
+
+
+ 459              	.LVL37:
+ 337:main.c        **** 				SetBrakeMode(BRAKE_OFF);
+ 460              		.loc 1 337 0
+ 461 0050 0020     		movs	r0, #0
+ 462 0052 FFF7FEFF 		bl	SetBrakeMode
+ 463              	.LVL38:
+ 338:main.c        ****                 //SetRearMode(REAR_OFF);
+ 339:main.c        ****                 SwitchBrakeLights(BRAKE_OFF);
+ 464              		.loc 1 339 0
+ 465 0056 0020     		movs	r0, #0
+ 466 0058 FFF7FEFF 		bl	SwitchBrakeLights
+ 467              	.LVL39:
+ 468              	.L44:
+ 340:main.c        ****                // SwitchRearLights(REAR_OFF);
+ 341:main.c        ****             }
+ 342:main.c        ****         }
+ 343:main.c        **** 		if ((!DaylightIsOn()) && GetRearMode() == REAR_OFF)
+ 469              		.loc 1 343 0
+ 470 005c FFF7FEFF 		bl	DaylightIsOn
+ 471              	.LVL40:
+ 472 0060 48B9     		cbnz	r0, .L45
+ 473              		.loc 1 343 0 is_stmt 0 discriminator 1
+ 474 0062 FFF7FEFF 		bl	GetRearMode
+ 475              	.LVL41:
+ 476 0066 30B9     		cbnz	r0, .L45
+ 344:main.c        **** 		{
+ 345:main.c        **** 			SwitchRearLights(REAR_ON);
+ 477              		.loc 1 345 0 is_stmt 1
+ 478 0068 0120     		movs	r0, #1
+ 479 006a FFF7FEFF 		bl	SwitchRearLights
+ 480              	.LVL42:
+ 346:main.c        **** 			SetRearMode(REAR_ON);
+ 481              		.loc 1 346 0
+ 482 006e 0120     		movs	r0, #1
+ 483 0070 FFF7FEFF 		bl	SetRearMode
+ 484              	.LVL43:
+ 485 0074 CCE7     		b	.L42
+ 486              	.L45:
+ 347:main.c        **** 		}
+ 348:main.c        **** 		else if (DaylightIsOn() && GetRearMode() == REAR_ON)
+ 487              		.loc 1 348 0
+ 488 0076 FFF7FEFF 		bl	DaylightIsOn
+ 489              	.LVL44:
+ 490 007a 0028     		cmp	r0, #0
+ 491 007c C8D0     		beq	.L42
+ 492              		.loc 1 348 0 is_stmt 0 discriminator 1
+ 493 007e FFF7FEFF 		bl	GetRearMode
+ 494              	.LVL45:
+ 495 0082 0128     		cmp	r0, #1
+ 496 0084 C4D1     		bne	.L42
+ 349:main.c        **** 		{
+ 350:main.c        **** 			SwitchRearLights(REAR_OFF);
+ 497              		.loc 1 350 0 is_stmt 1
+ 498 0086 0020     		movs	r0, #0
+ 499 0088 FFF7FEFF 		bl	SwitchRearLights
+ 500              	.LVL46:
+ 351:main.c        **** 			SetRearMode(REAR_OFF);
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 16
+
+
+ 501              		.loc 1 351 0
+ 502 008c 0020     		movs	r0, #0
+ 503 008e FFF7FEFF 		bl	SetRearMode
+ 504              	.LVL47:
+ 505 0092 BDE7     		b	.L42
+ 506              		.cfi_endproc
+ 507              	.LFE74:
+ 508              		.size	main, .-main
+ 509              		.comm	value,4,4
+ 510              		.global	rear_mode
+ 511              		.global	brake_mode
+ 512              		.global	button_mode
+ 513              		.bss
+ 514              		.align	2
+ 515              		.set	.LANCHOR0,. + 0
+ 516              		.type	button_mode, %object
+ 517              		.size	button_mode, 4
+ 518              	button_mode:
+ 519 0000 00000000 		.space	4
+ 520              		.type	brake_mode, %object
+ 521              		.size	brake_mode, 4
+ 522              	brake_mode:
+ 523 0004 00000000 		.space	4
+ 524              		.type	rear_mode, %object
+ 525              		.size	rear_mode, 4
+ 526              	rear_mode:
+ 527 0008 00000000 		.space	4
+ 528              		.text
+ 529              	.Letext0:
+ 530              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 531              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 532              		.file 4 "Generated_Source\\PSoC5/core_cm3.h"
+ 533              		.file 5 "Generated_Source\\PSoC5/rempedaal.h"
+ 534              		.file 6 "Generated_Source\\PSoC5/remlicht.h"
+ 535              		.file 7 "Generated_Source\\PSoC5/CyLib.h"
+ 536              		.file 8 "Generated_Source\\PSoC5/ADC_SAR_1.h"
+ 537              		.file 9 "Generated_Source\\PSoC5/achterlicht.h"
+ 538              		.file 10 "Generated_Source\\PSoC5/PWM_achterlicht.h"
+ 539              		.file 11 "Generated_Source\\PSoC5/Clock_achterlicht.h"
+ 540              		.section	.debug_info,"",%progbits
+ 541              	.Ldebug_info0:
+ 542 0000 F3040000 		.4byte	0x4f3
+ 543 0004 0400     		.2byte	0x4
+ 544 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 545 000a 04       		.byte	0x4
+ 546 000b 01       		.uleb128 0x1
+ 547 000c EE000000 		.4byte	.LASF43
+ 548 0010 0C       		.byte	0xc
+ 549 0011 89020000 		.4byte	.LASF44
+ 550 0015 6B000000 		.4byte	.LASF45
+ 551 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 552 001d 00000000 		.4byte	0
+ 553 0021 00000000 		.4byte	.Ldebug_line0
+ 554 0025 02       		.uleb128 0x2
+ 555 0026 01       		.byte	0x1
+ 556 0027 06       		.byte	0x6
+ 557 0028 E9020000 		.4byte	.LASF0
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 17
+
+
+ 558 002c 02       		.uleb128 0x2
+ 559 002d 01       		.byte	0x1
+ 560 002e 08       		.byte	0x8
+ 561 002f E0000000 		.4byte	.LASF1
+ 562 0033 02       		.uleb128 0x2
+ 563 0034 02       		.byte	0x2
+ 564 0035 05       		.byte	0x5
+ 565 0036 AB020000 		.4byte	.LASF2
+ 566 003a 02       		.uleb128 0x2
+ 567 003b 02       		.byte	0x2
+ 568 003c 07       		.byte	0x7
+ 569 003d 39000000 		.4byte	.LASF3
+ 570 0041 03       		.uleb128 0x3
+ 571 0042 26000000 		.4byte	.LASF9
+ 572 0046 02       		.byte	0x2
+ 573 0047 3F       		.byte	0x3f
+ 574 0048 4C000000 		.4byte	0x4c
+ 575 004c 02       		.uleb128 0x2
+ 576 004d 04       		.byte	0x4
+ 577 004e 05       		.byte	0x5
+ 578 004f D4020000 		.4byte	.LASF4
+ 579 0053 02       		.uleb128 0x2
+ 580 0054 04       		.byte	0x4
+ 581 0055 07       		.byte	0x7
+ 582 0056 87010000 		.4byte	.LASF5
+ 583 005a 02       		.uleb128 0x2
+ 584 005b 08       		.byte	0x8
+ 585 005c 05       		.byte	0x5
+ 586 005d 7B020000 		.4byte	.LASF6
+ 587 0061 02       		.uleb128 0x2
+ 588 0062 08       		.byte	0x8
+ 589 0063 07       		.byte	0x7
+ 590 0064 09020000 		.4byte	.LASF7
+ 591 0068 04       		.uleb128 0x4
+ 592 0069 04       		.byte	0x4
+ 593 006a 05       		.byte	0x5
+ 594 006b 696E7400 		.ascii	"int\000"
+ 595 006f 02       		.uleb128 0x2
+ 596 0070 04       		.byte	0x4
+ 597 0071 07       		.byte	0x7
+ 598 0072 FC010000 		.4byte	.LASF8
+ 599 0076 03       		.uleb128 0x3
+ 600 0077 59020000 		.4byte	.LASF10
+ 601 007b 03       		.byte	0x3
+ 602 007c 2C       		.byte	0x2c
+ 603 007d 41000000 		.4byte	0x41
+ 604 0081 02       		.uleb128 0x2
+ 605 0082 04       		.byte	0x4
+ 606 0083 04       		.byte	0x4
+ 607 0084 DA000000 		.4byte	.LASF11
+ 608 0088 02       		.uleb128 0x2
+ 609 0089 08       		.byte	0x8
+ 610 008a 04       		.byte	0x4
+ 611 008b D6010000 		.4byte	.LASF12
+ 612 008f 02       		.uleb128 0x2
+ 613 0090 01       		.byte	0x1
+ 614 0091 08       		.byte	0x8
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 18
+
+
+ 615 0092 90020000 		.4byte	.LASF13
+ 616 0096 02       		.uleb128 0x2
+ 617 0097 08       		.byte	0x8
+ 618 0098 04       		.byte	0x4
+ 619 0099 DD020000 		.4byte	.LASF14
+ 620 009d 02       		.uleb128 0x2
+ 621 009e 04       		.byte	0x4
+ 622 009f 07       		.byte	0x7
+ 623 00a0 61020000 		.4byte	.LASF15
+ 624 00a4 05       		.uleb128 0x5
+ 625 00a5 C4020000 		.4byte	.LASF26
+ 626 00a9 01       		.byte	0x1
+ 627 00aa CD       		.byte	0xcd
+ 628 00ab 68000000 		.4byte	0x68
+ 629 00af 00000000 		.4byte	.LFB63
+ 630 00b3 16000000 		.4byte	.LFE63-.LFB63
+ 631 00b7 01       		.uleb128 0x1
+ 632 00b8 9C       		.byte	0x9c
+ 633 00b9 D0000000 		.4byte	0xd0
+ 634 00bd 06       		.uleb128 0x6
+ 635 00be 06000000 		.4byte	.LVL0
+ 636 00c2 93040000 		.4byte	0x493
+ 637 00c6 06       		.uleb128 0x6
+ 638 00c7 0E000000 		.4byte	.LVL1
+ 639 00cb 93040000 		.4byte	0x493
+ 640 00cf 00       		.byte	0
+ 641 00d0 07       		.uleb128 0x7
+ 642 00d1 EE010000 		.4byte	.LASF16
+ 643 00d5 01       		.byte	0x1
+ 644 00d6 DB       		.byte	0xdb
+ 645 00d7 00000000 		.4byte	.LFB64
+ 646 00db 0C000000 		.4byte	.LFE64-.LFB64
+ 647 00df 01       		.uleb128 0x1
+ 648 00e0 9C       		.byte	0x9c
+ 649 00e1 F3000000 		.4byte	0xf3
+ 650 00e5 08       		.uleb128 0x8
+ 651 00e6 32020000 		.4byte	.LASF18
+ 652 00ea 01       		.byte	0x1
+ 653 00eb DB       		.byte	0xdb
+ 654 00ec 68000000 		.4byte	0x68
+ 655 00f0 01       		.uleb128 0x1
+ 656 00f1 50       		.byte	0x50
+ 657 00f2 00       		.byte	0
+ 658 00f3 09       		.uleb128 0x9
+ 659 00f4 99010000 		.4byte	.LASF19
+ 660 00f8 01       		.byte	0x1
+ 661 00f9 E0       		.byte	0xe0
+ 662 00fa 68000000 		.4byte	0x68
+ 663 00fe 00000000 		.4byte	.LFB65
+ 664 0102 0C000000 		.4byte	.LFE65-.LFB65
+ 665 0106 01       		.uleb128 0x1
+ 666 0107 9C       		.byte	0x9c
+ 667 0108 07       		.uleb128 0x7
+ 668 0109 5E000000 		.4byte	.LASF17
+ 669 010d 01       		.byte	0x1
+ 670 010e E5       		.byte	0xe5
+ 671 010f 00000000 		.4byte	.LFB66
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 19
+
+
+ 672 0113 0C000000 		.4byte	.LFE66-.LFB66
+ 673 0117 01       		.uleb128 0x1
+ 674 0118 9C       		.byte	0x9c
+ 675 0119 2B010000 		.4byte	0x12b
+ 676 011d 08       		.uleb128 0x8
+ 677 011e 32020000 		.4byte	.LASF18
+ 678 0122 01       		.byte	0x1
+ 679 0123 E5       		.byte	0xe5
+ 680 0124 68000000 		.4byte	0x68
+ 681 0128 01       		.uleb128 0x1
+ 682 0129 50       		.byte	0x50
+ 683 012a 00       		.byte	0
+ 684 012b 09       		.uleb128 0x9
+ 685 012c 05030000 		.4byte	.LASF20
+ 686 0130 01       		.byte	0x1
+ 687 0131 EA       		.byte	0xea
+ 688 0132 68000000 		.4byte	0x68
+ 689 0136 00000000 		.4byte	.LFB67
+ 690 013a 0C000000 		.4byte	.LFE67-.LFB67
+ 691 013e 01       		.uleb128 0x1
+ 692 013f 9C       		.byte	0x9c
+ 693 0140 07       		.uleb128 0x7
+ 694 0141 20020000 		.4byte	.LASF21
+ 695 0145 01       		.byte	0x1
+ 696 0146 EF       		.byte	0xef
+ 697 0147 00000000 		.4byte	.LFB68
+ 698 014b 16000000 		.4byte	.LFE68-.LFB68
+ 699 014f 01       		.uleb128 0x1
+ 700 0150 9C       		.byte	0x9c
+ 701 0151 81010000 		.4byte	0x181
+ 702 0155 0A       		.uleb128 0xa
+ 703 0156 32020000 		.4byte	.LASF18
+ 704 015a 01       		.byte	0x1
+ 705 015b EF       		.byte	0xef
+ 706 015c 68000000 		.4byte	0x68
+ 707 0160 00000000 		.4byte	.LLST0
+ 708 0164 0B       		.uleb128 0xb
+ 709 0165 0C000000 		.4byte	.LVL6
+ 710 0169 9E040000 		.4byte	0x49e
+ 711 016d 77010000 		.4byte	0x177
+ 712 0171 0C       		.uleb128 0xc
+ 713 0172 01       		.uleb128 0x1
+ 714 0173 50       		.byte	0x50
+ 715 0174 01       		.uleb128 0x1
+ 716 0175 31       		.byte	0x31
+ 717 0176 00       		.byte	0
+ 718 0177 06       		.uleb128 0x6
+ 719 0178 14000000 		.4byte	.LVL8
+ 720 017c 9E040000 		.4byte	0x49e
+ 721 0180 00       		.byte	0
+ 722 0181 07       		.uleb128 0x7
+ 723 0182 6A020000 		.4byte	.LASF22
+ 724 0186 01       		.byte	0x1
+ 725 0187 FB       		.byte	0xfb
+ 726 0188 00000000 		.4byte	.LFB69
+ 727 018c 28000000 		.4byte	.LFE69-.LFB69
+ 728 0190 01       		.uleb128 0x1
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 20
+
+
+ 729 0191 9C       		.byte	0x9c
+ 730 0192 08020000 		.4byte	0x208
+ 731 0196 0A       		.uleb128 0xa
+ 732 0197 30000000 		.4byte	.LASF23
+ 733 019b 01       		.byte	0x1
+ 734 019c FB       		.byte	0xfb
+ 735 019d 68000000 		.4byte	0x68
+ 736 01a1 3A000000 		.4byte	.LLST1
+ 737 01a5 0D       		.uleb128 0xd
+ 738 01a6 04000000 		.4byte	.LBB2
+ 739 01aa 22000000 		.4byte	.LBE2-.LBB2
+ 740 01ae 0E       		.uleb128 0xe
+ 741 01af 6900     		.ascii	"i\000"
+ 742 01b1 01       		.byte	0x1
+ 743 01b2 0001     		.2byte	0x100
+ 744 01b4 68000000 		.4byte	0x68
+ 745 01b8 58000000 		.4byte	.LLST2
+ 746 01bc 0B       		.uleb128 0xb
+ 747 01bd 0E000000 		.4byte	.LVL12
+ 748 01c1 9E040000 		.4byte	0x49e
+ 749 01c5 CF010000 		.4byte	0x1cf
+ 750 01c9 0C       		.uleb128 0xc
+ 751 01ca 01       		.uleb128 0x1
+ 752 01cb 50       		.byte	0x50
+ 753 01cc 01       		.uleb128 0x1
+ 754 01cd 31       		.byte	0x31
+ 755 01ce 00       		.byte	0
+ 756 01cf 0B       		.uleb128 0xb
+ 757 01d0 14000000 		.4byte	.LVL13
+ 758 01d4 A9040000 		.4byte	0x4a9
+ 759 01d8 E3010000 		.4byte	0x1e3
+ 760 01dc 0C       		.uleb128 0xc
+ 761 01dd 01       		.uleb128 0x1
+ 762 01de 50       		.byte	0x50
+ 763 01df 02       		.uleb128 0x2
+ 764 01e0 75       		.byte	0x75
+ 765 01e1 00       		.sleb128 0
+ 766 01e2 00       		.byte	0
+ 767 01e3 0B       		.uleb128 0xb
+ 768 01e4 1A000000 		.4byte	.LVL14
+ 769 01e8 9E040000 		.4byte	0x49e
+ 770 01ec F6010000 		.4byte	0x1f6
+ 771 01f0 0C       		.uleb128 0xc
+ 772 01f1 01       		.uleb128 0x1
+ 773 01f2 50       		.byte	0x50
+ 774 01f3 01       		.uleb128 0x1
+ 775 01f4 30       		.byte	0x30
+ 776 01f5 00       		.byte	0
+ 777 01f6 0F       		.uleb128 0xf
+ 778 01f7 20000000 		.4byte	.LVL15
+ 779 01fb A9040000 		.4byte	0x4a9
+ 780 01ff 0C       		.uleb128 0xc
+ 781 0200 01       		.uleb128 0x1
+ 782 0201 50       		.byte	0x50
+ 783 0202 02       		.uleb128 0x2
+ 784 0203 75       		.byte	0x75
+ 785 0204 00       		.sleb128 0
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 21
+
+
+ 786 0205 00       		.byte	0
+ 787 0206 00       		.byte	0
+ 788 0207 00       		.byte	0
+ 789 0208 10       		.uleb128 0x10
+ 790 0209 95020000 		.4byte	.LASF24
+ 791 020d 01       		.byte	0x1
+ 792 020e 0A01     		.2byte	0x10a
+ 793 0210 00000000 		.4byte	.LFB70
+ 794 0214 0C000000 		.4byte	.LFE70-.LFB70
+ 795 0218 01       		.uleb128 0x1
+ 796 0219 9C       		.byte	0x9c
+ 797 021a 2D020000 		.4byte	0x22d
+ 798 021e 11       		.uleb128 0x11
+ 799 021f 32020000 		.4byte	.LASF18
+ 800 0223 01       		.byte	0x1
+ 801 0224 0A01     		.2byte	0x10a
+ 802 0226 68000000 		.4byte	0x68
+ 803 022a 01       		.uleb128 0x1
+ 804 022b 50       		.byte	0x50
+ 805 022c 00       		.byte	0
+ 806 022d 12       		.uleb128 0x12
+ 807 022e DD010000 		.4byte	.LASF25
+ 808 0232 01       		.byte	0x1
+ 809 0233 0F01     		.2byte	0x10f
+ 810 0235 68000000 		.4byte	0x68
+ 811 0239 00000000 		.4byte	.LFB71
+ 812 023d 0C000000 		.4byte	.LFE71-.LFB71
+ 813 0241 01       		.uleb128 0x1
+ 814 0242 9C       		.byte	0x9c
+ 815 0243 13       		.uleb128 0x13
+ 816 0244 A7010000 		.4byte	.LASF27
+ 817 0248 01       		.byte	0x1
+ 818 0249 1601     		.2byte	0x116
+ 819 024b 68000000 		.4byte	0x68
+ 820 024f 00000000 		.4byte	.LFB72
+ 821 0253 20000000 		.4byte	.LFE72-.LFB72
+ 822 0257 01       		.uleb128 0x1
+ 823 0258 9C       		.byte	0x9c
+ 824 0259 67020000 		.4byte	0x267
+ 825 025d 06       		.uleb128 0x6
+ 826 025e 06000000 		.4byte	.LVL18
+ 827 0262 B4040000 		.4byte	0x4b4
+ 828 0266 00       		.byte	0
+ 829 0267 10       		.uleb128 0x10
+ 830 0268 0F000000 		.4byte	.LASF28
+ 831 026c 01       		.byte	0x1
+ 832 026d 2501     		.2byte	0x125
+ 833 026f 00000000 		.4byte	.LFB73
+ 834 0273 20000000 		.4byte	.LFE73-.LFB73
+ 835 0277 01       		.uleb128 0x1
+ 836 0278 9C       		.byte	0x9c
+ 837 0279 CF020000 		.4byte	0x2cf
+ 838 027d 14       		.uleb128 0x14
+ 839 027e 32020000 		.4byte	.LASF18
+ 840 0282 01       		.byte	0x1
+ 841 0283 2501     		.2byte	0x125
+ 842 0285 68000000 		.4byte	0x68
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 22
+
+
+ 843 0289 77000000 		.4byte	.LLST3
+ 844 028d 0B       		.uleb128 0xb
+ 845 028e 0A000000 		.4byte	.LVL20
+ 846 0292 BF040000 		.4byte	0x4bf
+ 847 0296 A2020000 		.4byte	0x2a2
+ 848 029a 0C       		.uleb128 0xc
+ 849 029b 01       		.uleb128 0x1
+ 850 029c 50       		.byte	0x50
+ 851 029d 03       		.uleb128 0x3
+ 852 029e F3       		.byte	0xf3
+ 853 029f 01       		.uleb128 0x1
+ 854 02a0 50       		.byte	0x50
+ 855 02a1 00       		.byte	0
+ 856 02a2 0B       		.uleb128 0xb
+ 857 02a3 10000000 		.4byte	.LVL21
+ 858 02a7 CA040000 		.4byte	0x4ca
+ 859 02ab B6020000 		.4byte	0x2b6
+ 860 02af 0C       		.uleb128 0xc
+ 861 02b0 01       		.uleb128 0x1
+ 862 02b1 50       		.byte	0x50
+ 863 02b2 02       		.uleb128 0x2
+ 864 02b3 08       		.byte	0x8
+ 865 02b4 32       		.byte	0x32
+ 866 02b5 00       		.byte	0
+ 867 02b6 06       		.uleb128 0x6
+ 868 02b7 18000000 		.4byte	.LVL23
+ 869 02bb BF040000 		.4byte	0x4bf
+ 870 02bf 0F       		.uleb128 0xf
+ 871 02c0 1E000000 		.4byte	.LVL24
+ 872 02c4 CA040000 		.4byte	0x4ca
+ 873 02c8 0C       		.uleb128 0xc
+ 874 02c9 01       		.uleb128 0x1
+ 875 02ca 50       		.byte	0x50
+ 876 02cb 01       		.uleb128 0x1
+ 877 02cc 30       		.byte	0x30
+ 878 02cd 00       		.byte	0
+ 879 02ce 00       		.byte	0
+ 880 02cf 15       		.uleb128 0x15
+ 881 02d0 E9010000 		.4byte	.LASF46
+ 882 02d4 01       		.byte	0x1
+ 883 02d5 3301     		.2byte	0x133
+ 884 02d7 68000000 		.4byte	0x68
+ 885 02db 00000000 		.4byte	.LFB74
+ 886 02df 94000000 		.4byte	.LFE74-.LFB74
+ 887 02e3 01       		.uleb128 0x1
+ 888 02e4 9C       		.byte	0x9c
+ 889 02e5 38040000 		.4byte	0x438
+ 890 02e9 06       		.uleb128 0x6
+ 891 02ea 08000000 		.4byte	.LVL25
+ 892 02ee D5040000 		.4byte	0x4d5
+ 893 02f2 06       		.uleb128 0x6
+ 894 02f3 0C000000 		.4byte	.LVL26
+ 895 02f7 E0040000 		.4byte	0x4e0
+ 896 02fb 06       		.uleb128 0x6
+ 897 02fc 10000000 		.4byte	.LVL27
+ 898 0300 EB040000 		.4byte	0x4eb
+ 899 0304 0B       		.uleb128 0xb
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 23
+
+
+ 900 0305 16000000 		.4byte	.LVL28
+ 901 0309 08020000 		.4byte	0x208
+ 902 030d 17030000 		.4byte	0x317
+ 903 0311 0C       		.uleb128 0xc
+ 904 0312 01       		.uleb128 0x1
+ 905 0313 50       		.byte	0x50
+ 906 0314 01       		.uleb128 0x1
+ 907 0315 31       		.byte	0x31
+ 908 0316 00       		.byte	0
+ 909 0317 0B       		.uleb128 0xb
+ 910 0318 1C000000 		.4byte	.LVL29
+ 911 031c 67020000 		.4byte	0x267
+ 912 0320 2A030000 		.4byte	0x32a
+ 913 0324 0C       		.uleb128 0xc
+ 914 0325 01       		.uleb128 0x1
+ 915 0326 50       		.byte	0x50
+ 916 0327 01       		.uleb128 0x1
+ 917 0328 31       		.byte	0x31
+ 918 0329 00       		.byte	0
+ 919 032a 06       		.uleb128 0x6
+ 920 032b 20000000 		.4byte	.LVL30
+ 921 032f A4000000 		.4byte	0xa4
+ 922 0333 06       		.uleb128 0x6
+ 923 0334 26000000 		.4byte	.LVL31
+ 924 0338 F3000000 		.4byte	0xf3
+ 925 033c 0B       		.uleb128 0xb
+ 926 033d 2E000000 		.4byte	.LVL32
+ 927 0341 D0000000 		.4byte	0xd0
+ 928 0345 4F030000 		.4byte	0x34f
+ 929 0349 0C       		.uleb128 0xc
+ 930 034a 01       		.uleb128 0x1
+ 931 034b 50       		.byte	0x50
+ 932 034c 01       		.uleb128 0x1
+ 933 034d 31       		.byte	0x31
+ 934 034e 00       		.byte	0
+ 935 034f 0B       		.uleb128 0xb
+ 936 0350 34000000 		.4byte	.LVL33
+ 937 0354 08010000 		.4byte	0x108
+ 938 0358 62030000 		.4byte	0x362
+ 939 035c 0C       		.uleb128 0xc
+ 940 035d 01       		.uleb128 0x1
+ 941 035e 50       		.byte	0x50
+ 942 035f 01       		.uleb128 0x1
+ 943 0360 32       		.byte	0x32
+ 944 0361 00       		.byte	0
+ 945 0362 0B       		.uleb128 0xb
+ 946 0363 3A000000 		.4byte	.LVL34
+ 947 0367 81010000 		.4byte	0x181
+ 948 036b 76030000 		.4byte	0x376
+ 949 036f 0C       		.uleb128 0xc
+ 950 0370 01       		.uleb128 0x1
+ 951 0371 50       		.byte	0x50
+ 952 0372 02       		.uleb128 0x2
+ 953 0373 08       		.byte	0x8
+ 954 0374 64       		.byte	0x64
+ 955 0375 00       		.byte	0
+ 956 0376 0B       		.uleb128 0xb
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 24
+
+
+ 957 0377 40000000 		.4byte	.LVL35
+ 958 037b 40010000 		.4byte	0x140
+ 959 037f 89030000 		.4byte	0x389
+ 960 0383 0C       		.uleb128 0xc
+ 961 0384 01       		.uleb128 0x1
+ 962 0385 50       		.byte	0x50
+ 963 0386 01       		.uleb128 0x1
+ 964 0387 32       		.byte	0x32
+ 965 0388 00       		.byte	0
+ 966 0389 06       		.uleb128 0x6
+ 967 038a 46000000 		.4byte	.LVL36
+ 968 038e F3000000 		.4byte	0xf3
+ 969 0392 0B       		.uleb128 0xb
+ 970 0393 50000000 		.4byte	.LVL37
+ 971 0397 D0000000 		.4byte	0xd0
+ 972 039b A5030000 		.4byte	0x3a5
+ 973 039f 0C       		.uleb128 0xc
+ 974 03a0 01       		.uleb128 0x1
+ 975 03a1 50       		.byte	0x50
+ 976 03a2 01       		.uleb128 0x1
+ 977 03a3 30       		.byte	0x30
+ 978 03a4 00       		.byte	0
+ 979 03a5 0B       		.uleb128 0xb
+ 980 03a6 56000000 		.4byte	.LVL38
+ 981 03aa 08010000 		.4byte	0x108
+ 982 03ae B8030000 		.4byte	0x3b8
+ 983 03b2 0C       		.uleb128 0xc
+ 984 03b3 01       		.uleb128 0x1
+ 985 03b4 50       		.byte	0x50
+ 986 03b5 01       		.uleb128 0x1
+ 987 03b6 30       		.byte	0x30
+ 988 03b7 00       		.byte	0
+ 989 03b8 0B       		.uleb128 0xb
+ 990 03b9 5C000000 		.4byte	.LVL39
+ 991 03bd 40010000 		.4byte	0x140
+ 992 03c1 CB030000 		.4byte	0x3cb
+ 993 03c5 0C       		.uleb128 0xc
+ 994 03c6 01       		.uleb128 0x1
+ 995 03c7 50       		.byte	0x50
+ 996 03c8 01       		.uleb128 0x1
+ 997 03c9 30       		.byte	0x30
+ 998 03ca 00       		.byte	0
+ 999 03cb 06       		.uleb128 0x6
+ 1000 03cc 60000000 		.4byte	.LVL40
+ 1001 03d0 43020000 		.4byte	0x243
+ 1002 03d4 06       		.uleb128 0x6
+ 1003 03d5 66000000 		.4byte	.LVL41
+ 1004 03d9 2D020000 		.4byte	0x22d
+ 1005 03dd 0B       		.uleb128 0xb
+ 1006 03de 6E000000 		.4byte	.LVL42
+ 1007 03e2 67020000 		.4byte	0x267
+ 1008 03e6 F0030000 		.4byte	0x3f0
+ 1009 03ea 0C       		.uleb128 0xc
+ 1010 03eb 01       		.uleb128 0x1
+ 1011 03ec 50       		.byte	0x50
+ 1012 03ed 01       		.uleb128 0x1
+ 1013 03ee 31       		.byte	0x31
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 25
+
+
+ 1014 03ef 00       		.byte	0
+ 1015 03f0 0B       		.uleb128 0xb
+ 1016 03f1 74000000 		.4byte	.LVL43
+ 1017 03f5 08020000 		.4byte	0x208
+ 1018 03f9 03040000 		.4byte	0x403
+ 1019 03fd 0C       		.uleb128 0xc
+ 1020 03fe 01       		.uleb128 0x1
+ 1021 03ff 50       		.byte	0x50
+ 1022 0400 01       		.uleb128 0x1
+ 1023 0401 31       		.byte	0x31
+ 1024 0402 00       		.byte	0
+ 1025 0403 06       		.uleb128 0x6
+ 1026 0404 7A000000 		.4byte	.LVL44
+ 1027 0408 43020000 		.4byte	0x243
+ 1028 040c 06       		.uleb128 0x6
+ 1029 040d 82000000 		.4byte	.LVL45
+ 1030 0411 2D020000 		.4byte	0x22d
+ 1031 0415 0B       		.uleb128 0xb
+ 1032 0416 8C000000 		.4byte	.LVL46
+ 1033 041a 67020000 		.4byte	0x267
+ 1034 041e 28040000 		.4byte	0x428
+ 1035 0422 0C       		.uleb128 0xc
+ 1036 0423 01       		.uleb128 0x1
+ 1037 0424 50       		.byte	0x50
+ 1038 0425 01       		.uleb128 0x1
+ 1039 0426 30       		.byte	0x30
+ 1040 0427 00       		.byte	0
+ 1041 0428 0F       		.uleb128 0xf
+ 1042 0429 92000000 		.4byte	.LVL47
+ 1043 042d 08020000 		.4byte	0x208
+ 1044 0431 0C       		.uleb128 0xc
+ 1045 0432 01       		.uleb128 0x1
+ 1046 0433 50       		.byte	0x50
+ 1047 0434 01       		.uleb128 0x1
+ 1048 0435 30       		.byte	0x30
+ 1049 0436 00       		.byte	0
+ 1050 0437 00       		.byte	0
+ 1051 0438 16       		.uleb128 0x16
+ 1052 0439 B4010000 		.4byte	.LASF29
+ 1053 043d 04       		.byte	0x4
+ 1054 043e 1207     		.2byte	0x712
+ 1055 0440 44040000 		.4byte	0x444
+ 1056 0444 17       		.uleb128 0x17
+ 1057 0445 76000000 		.4byte	0x76
+ 1058 0449 18       		.uleb128 0x18
+ 1059 044a 4D020000 		.4byte	.LASF30
+ 1060 044e 01       		.byte	0x1
+ 1061 044f C9       		.byte	0xc9
+ 1062 0450 68000000 		.4byte	0x68
+ 1063 0454 05       		.uleb128 0x5
+ 1064 0455 03       		.byte	0x3
+ 1065 0456 00000000 		.4byte	button_mode
+ 1066 045a 18       		.uleb128 0x18
+ 1067 045b 7C010000 		.4byte	.LASF31
+ 1068 045f 01       		.byte	0x1
+ 1069 0460 CA       		.byte	0xca
+ 1070 0461 68000000 		.4byte	0x68
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 26
+
+
+ 1071 0465 05       		.uleb128 0x5
+ 1072 0466 03       		.byte	0x3
+ 1073 0467 00000000 		.4byte	brake_mode
+ 1074 046b 18       		.uleb128 0x18
+ 1075 046c A1020000 		.4byte	.LASF32
+ 1076 0470 01       		.byte	0x1
+ 1077 0471 CB       		.byte	0xcb
+ 1078 0472 68000000 		.4byte	0x68
+ 1079 0476 05       		.uleb128 0x5
+ 1080 0477 03       		.byte	0x3
+ 1081 0478 00000000 		.4byte	rear_mode
+ 1082 047c 19       		.uleb128 0x19
+ 1083 047d 20000000 		.4byte	.LASF33
+ 1084 0481 01       		.byte	0x1
+ 1085 0482 1401     		.2byte	0x114
+ 1086 0484 8E040000 		.4byte	0x48e
+ 1087 0488 05       		.uleb128 0x5
+ 1088 0489 03       		.byte	0x3
+ 1089 048a 00000000 		.4byte	value
+ 1090 048e 17       		.uleb128 0x17
+ 1091 048f 68000000 		.4byte	0x68
+ 1092 0493 1A       		.uleb128 0x1a
+ 1093 0494 00000000 		.4byte	.LASF34
+ 1094 0498 00000000 		.4byte	.LASF34
+ 1095 049c 05       		.byte	0x5
+ 1096 049d 29       		.byte	0x29
+ 1097 049e 1A       		.uleb128 0x1a
+ 1098 049f B5020000 		.4byte	.LASF35
+ 1099 04a3 B5020000 		.4byte	.LASF35
+ 1100 04a7 06       		.byte	0x6
+ 1101 04a8 26       		.byte	0x26
+ 1102 04a9 1A       		.uleb128 0x1a
+ 1103 04aa 12030000 		.4byte	.LASF36
+ 1104 04ae 12030000 		.4byte	.LASF36
+ 1105 04b2 07       		.byte	0x7
+ 1106 04b3 76       		.byte	0x76
+ 1107 04b4 1A       		.uleb128 0x1a
+ 1108 04b5 C1010000 		.4byte	.LASF37
+ 1109 04b9 C1010000 		.4byte	.LASF37
+ 1110 04bd 08       		.byte	0x8
+ 1111 04be 3A       		.byte	0x3a
+ 1112 04bf 1A       		.uleb128 0x1a
+ 1113 04c0 4C000000 		.4byte	.LASF38
+ 1114 04c4 4C000000 		.4byte	.LASF38
+ 1115 04c8 09       		.byte	0x9
+ 1116 04c9 26       		.byte	0x26
+ 1117 04ca 1A       		.uleb128 0x1a
+ 1118 04cb BD000000 		.4byte	.LASF39
+ 1119 04cf BD000000 		.4byte	.LASF39
+ 1120 04d3 0A       		.byte	0xa
+ 1121 04d4 C3       		.byte	0xc3
+ 1122 04d5 1A       		.uleb128 0x1a
+ 1123 04d6 37020000 		.4byte	.LASF40
+ 1124 04da 37020000 		.4byte	.LASF40
+ 1125 04de 0A       		.byte	0xa
+ 1126 04df 92       		.byte	0x92
+ 1127 04e0 1A       		.uleb128 0x1a
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 27
+
+
+ 1128 04e1 1A030000 		.4byte	.LASF41
+ 1129 04e5 1A030000 		.4byte	.LASF41
+ 1130 04e9 0B       		.byte	0xb
+ 1131 04ea 27       		.byte	0x27
+ 1132 04eb 1A       		.uleb128 0x1a
+ 1133 04ec F5020000 		.4byte	.LASF42
+ 1134 04f0 F5020000 		.4byte	.LASF42
+ 1135 04f4 08       		.byte	0x8
+ 1136 04f5 34       		.byte	0x34
+ 1137 04f6 00       		.byte	0
+ 1138              		.section	.debug_abbrev,"",%progbits
+ 1139              	.Ldebug_abbrev0:
+ 1140 0000 01       		.uleb128 0x1
+ 1141 0001 11       		.uleb128 0x11
+ 1142 0002 01       		.byte	0x1
+ 1143 0003 25       		.uleb128 0x25
+ 1144 0004 0E       		.uleb128 0xe
+ 1145 0005 13       		.uleb128 0x13
+ 1146 0006 0B       		.uleb128 0xb
+ 1147 0007 03       		.uleb128 0x3
+ 1148 0008 0E       		.uleb128 0xe
+ 1149 0009 1B       		.uleb128 0x1b
+ 1150 000a 0E       		.uleb128 0xe
+ 1151 000b 55       		.uleb128 0x55
+ 1152 000c 17       		.uleb128 0x17
+ 1153 000d 11       		.uleb128 0x11
+ 1154 000e 01       		.uleb128 0x1
+ 1155 000f 10       		.uleb128 0x10
+ 1156 0010 17       		.uleb128 0x17
+ 1157 0011 00       		.byte	0
+ 1158 0012 00       		.byte	0
+ 1159 0013 02       		.uleb128 0x2
+ 1160 0014 24       		.uleb128 0x24
+ 1161 0015 00       		.byte	0
+ 1162 0016 0B       		.uleb128 0xb
+ 1163 0017 0B       		.uleb128 0xb
+ 1164 0018 3E       		.uleb128 0x3e
+ 1165 0019 0B       		.uleb128 0xb
+ 1166 001a 03       		.uleb128 0x3
+ 1167 001b 0E       		.uleb128 0xe
+ 1168 001c 00       		.byte	0
+ 1169 001d 00       		.byte	0
+ 1170 001e 03       		.uleb128 0x3
+ 1171 001f 16       		.uleb128 0x16
+ 1172 0020 00       		.byte	0
+ 1173 0021 03       		.uleb128 0x3
+ 1174 0022 0E       		.uleb128 0xe
+ 1175 0023 3A       		.uleb128 0x3a
+ 1176 0024 0B       		.uleb128 0xb
+ 1177 0025 3B       		.uleb128 0x3b
+ 1178 0026 0B       		.uleb128 0xb
+ 1179 0027 49       		.uleb128 0x49
+ 1180 0028 13       		.uleb128 0x13
+ 1181 0029 00       		.byte	0
+ 1182 002a 00       		.byte	0
+ 1183 002b 04       		.uleb128 0x4
+ 1184 002c 24       		.uleb128 0x24
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 28
+
+
+ 1185 002d 00       		.byte	0
+ 1186 002e 0B       		.uleb128 0xb
+ 1187 002f 0B       		.uleb128 0xb
+ 1188 0030 3E       		.uleb128 0x3e
+ 1189 0031 0B       		.uleb128 0xb
+ 1190 0032 03       		.uleb128 0x3
+ 1191 0033 08       		.uleb128 0x8
+ 1192 0034 00       		.byte	0
+ 1193 0035 00       		.byte	0
+ 1194 0036 05       		.uleb128 0x5
+ 1195 0037 2E       		.uleb128 0x2e
+ 1196 0038 01       		.byte	0x1
+ 1197 0039 3F       		.uleb128 0x3f
+ 1198 003a 19       		.uleb128 0x19
+ 1199 003b 03       		.uleb128 0x3
+ 1200 003c 0E       		.uleb128 0xe
+ 1201 003d 3A       		.uleb128 0x3a
+ 1202 003e 0B       		.uleb128 0xb
+ 1203 003f 3B       		.uleb128 0x3b
+ 1204 0040 0B       		.uleb128 0xb
+ 1205 0041 27       		.uleb128 0x27
+ 1206 0042 19       		.uleb128 0x19
+ 1207 0043 49       		.uleb128 0x49
+ 1208 0044 13       		.uleb128 0x13
+ 1209 0045 11       		.uleb128 0x11
+ 1210 0046 01       		.uleb128 0x1
+ 1211 0047 12       		.uleb128 0x12
+ 1212 0048 06       		.uleb128 0x6
+ 1213 0049 40       		.uleb128 0x40
+ 1214 004a 18       		.uleb128 0x18
+ 1215 004b 9742     		.uleb128 0x2117
+ 1216 004d 19       		.uleb128 0x19
+ 1217 004e 01       		.uleb128 0x1
+ 1218 004f 13       		.uleb128 0x13
+ 1219 0050 00       		.byte	0
+ 1220 0051 00       		.byte	0
+ 1221 0052 06       		.uleb128 0x6
+ 1222 0053 898201   		.uleb128 0x4109
+ 1223 0056 00       		.byte	0
+ 1224 0057 11       		.uleb128 0x11
+ 1225 0058 01       		.uleb128 0x1
+ 1226 0059 31       		.uleb128 0x31
+ 1227 005a 13       		.uleb128 0x13
+ 1228 005b 00       		.byte	0
+ 1229 005c 00       		.byte	0
+ 1230 005d 07       		.uleb128 0x7
+ 1231 005e 2E       		.uleb128 0x2e
+ 1232 005f 01       		.byte	0x1
+ 1233 0060 3F       		.uleb128 0x3f
+ 1234 0061 19       		.uleb128 0x19
+ 1235 0062 03       		.uleb128 0x3
+ 1236 0063 0E       		.uleb128 0xe
+ 1237 0064 3A       		.uleb128 0x3a
+ 1238 0065 0B       		.uleb128 0xb
+ 1239 0066 3B       		.uleb128 0x3b
+ 1240 0067 0B       		.uleb128 0xb
+ 1241 0068 27       		.uleb128 0x27
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 29
+
+
+ 1242 0069 19       		.uleb128 0x19
+ 1243 006a 11       		.uleb128 0x11
+ 1244 006b 01       		.uleb128 0x1
+ 1245 006c 12       		.uleb128 0x12
+ 1246 006d 06       		.uleb128 0x6
+ 1247 006e 40       		.uleb128 0x40
+ 1248 006f 18       		.uleb128 0x18
+ 1249 0070 9742     		.uleb128 0x2117
+ 1250 0072 19       		.uleb128 0x19
+ 1251 0073 01       		.uleb128 0x1
+ 1252 0074 13       		.uleb128 0x13
+ 1253 0075 00       		.byte	0
+ 1254 0076 00       		.byte	0
+ 1255 0077 08       		.uleb128 0x8
+ 1256 0078 05       		.uleb128 0x5
+ 1257 0079 00       		.byte	0
+ 1258 007a 03       		.uleb128 0x3
+ 1259 007b 0E       		.uleb128 0xe
+ 1260 007c 3A       		.uleb128 0x3a
+ 1261 007d 0B       		.uleb128 0xb
+ 1262 007e 3B       		.uleb128 0x3b
+ 1263 007f 0B       		.uleb128 0xb
+ 1264 0080 49       		.uleb128 0x49
+ 1265 0081 13       		.uleb128 0x13
+ 1266 0082 02       		.uleb128 0x2
+ 1267 0083 18       		.uleb128 0x18
+ 1268 0084 00       		.byte	0
+ 1269 0085 00       		.byte	0
+ 1270 0086 09       		.uleb128 0x9
+ 1271 0087 2E       		.uleb128 0x2e
+ 1272 0088 00       		.byte	0
+ 1273 0089 3F       		.uleb128 0x3f
+ 1274 008a 19       		.uleb128 0x19
+ 1275 008b 03       		.uleb128 0x3
+ 1276 008c 0E       		.uleb128 0xe
+ 1277 008d 3A       		.uleb128 0x3a
+ 1278 008e 0B       		.uleb128 0xb
+ 1279 008f 3B       		.uleb128 0x3b
+ 1280 0090 0B       		.uleb128 0xb
+ 1281 0091 27       		.uleb128 0x27
+ 1282 0092 19       		.uleb128 0x19
+ 1283 0093 49       		.uleb128 0x49
+ 1284 0094 13       		.uleb128 0x13
+ 1285 0095 11       		.uleb128 0x11
+ 1286 0096 01       		.uleb128 0x1
+ 1287 0097 12       		.uleb128 0x12
+ 1288 0098 06       		.uleb128 0x6
+ 1289 0099 40       		.uleb128 0x40
+ 1290 009a 18       		.uleb128 0x18
+ 1291 009b 9742     		.uleb128 0x2117
+ 1292 009d 19       		.uleb128 0x19
+ 1293 009e 00       		.byte	0
+ 1294 009f 00       		.byte	0
+ 1295 00a0 0A       		.uleb128 0xa
+ 1296 00a1 05       		.uleb128 0x5
+ 1297 00a2 00       		.byte	0
+ 1298 00a3 03       		.uleb128 0x3
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 30
+
+
+ 1299 00a4 0E       		.uleb128 0xe
+ 1300 00a5 3A       		.uleb128 0x3a
+ 1301 00a6 0B       		.uleb128 0xb
+ 1302 00a7 3B       		.uleb128 0x3b
+ 1303 00a8 0B       		.uleb128 0xb
+ 1304 00a9 49       		.uleb128 0x49
+ 1305 00aa 13       		.uleb128 0x13
+ 1306 00ab 02       		.uleb128 0x2
+ 1307 00ac 17       		.uleb128 0x17
+ 1308 00ad 00       		.byte	0
+ 1309 00ae 00       		.byte	0
+ 1310 00af 0B       		.uleb128 0xb
+ 1311 00b0 898201   		.uleb128 0x4109
+ 1312 00b3 01       		.byte	0x1
+ 1313 00b4 11       		.uleb128 0x11
+ 1314 00b5 01       		.uleb128 0x1
+ 1315 00b6 31       		.uleb128 0x31
+ 1316 00b7 13       		.uleb128 0x13
+ 1317 00b8 01       		.uleb128 0x1
+ 1318 00b9 13       		.uleb128 0x13
+ 1319 00ba 00       		.byte	0
+ 1320 00bb 00       		.byte	0
+ 1321 00bc 0C       		.uleb128 0xc
+ 1322 00bd 8A8201   		.uleb128 0x410a
+ 1323 00c0 00       		.byte	0
+ 1324 00c1 02       		.uleb128 0x2
+ 1325 00c2 18       		.uleb128 0x18
+ 1326 00c3 9142     		.uleb128 0x2111
+ 1327 00c5 18       		.uleb128 0x18
+ 1328 00c6 00       		.byte	0
+ 1329 00c7 00       		.byte	0
+ 1330 00c8 0D       		.uleb128 0xd
+ 1331 00c9 0B       		.uleb128 0xb
+ 1332 00ca 01       		.byte	0x1
+ 1333 00cb 11       		.uleb128 0x11
+ 1334 00cc 01       		.uleb128 0x1
+ 1335 00cd 12       		.uleb128 0x12
+ 1336 00ce 06       		.uleb128 0x6
+ 1337 00cf 00       		.byte	0
+ 1338 00d0 00       		.byte	0
+ 1339 00d1 0E       		.uleb128 0xe
+ 1340 00d2 34       		.uleb128 0x34
+ 1341 00d3 00       		.byte	0
+ 1342 00d4 03       		.uleb128 0x3
+ 1343 00d5 08       		.uleb128 0x8
+ 1344 00d6 3A       		.uleb128 0x3a
+ 1345 00d7 0B       		.uleb128 0xb
+ 1346 00d8 3B       		.uleb128 0x3b
+ 1347 00d9 05       		.uleb128 0x5
+ 1348 00da 49       		.uleb128 0x49
+ 1349 00db 13       		.uleb128 0x13
+ 1350 00dc 02       		.uleb128 0x2
+ 1351 00dd 17       		.uleb128 0x17
+ 1352 00de 00       		.byte	0
+ 1353 00df 00       		.byte	0
+ 1354 00e0 0F       		.uleb128 0xf
+ 1355 00e1 898201   		.uleb128 0x4109
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 31
+
+
+ 1356 00e4 01       		.byte	0x1
+ 1357 00e5 11       		.uleb128 0x11
+ 1358 00e6 01       		.uleb128 0x1
+ 1359 00e7 31       		.uleb128 0x31
+ 1360 00e8 13       		.uleb128 0x13
+ 1361 00e9 00       		.byte	0
+ 1362 00ea 00       		.byte	0
+ 1363 00eb 10       		.uleb128 0x10
+ 1364 00ec 2E       		.uleb128 0x2e
+ 1365 00ed 01       		.byte	0x1
+ 1366 00ee 3F       		.uleb128 0x3f
+ 1367 00ef 19       		.uleb128 0x19
+ 1368 00f0 03       		.uleb128 0x3
+ 1369 00f1 0E       		.uleb128 0xe
+ 1370 00f2 3A       		.uleb128 0x3a
+ 1371 00f3 0B       		.uleb128 0xb
+ 1372 00f4 3B       		.uleb128 0x3b
+ 1373 00f5 05       		.uleb128 0x5
+ 1374 00f6 27       		.uleb128 0x27
+ 1375 00f7 19       		.uleb128 0x19
+ 1376 00f8 11       		.uleb128 0x11
+ 1377 00f9 01       		.uleb128 0x1
+ 1378 00fa 12       		.uleb128 0x12
+ 1379 00fb 06       		.uleb128 0x6
+ 1380 00fc 40       		.uleb128 0x40
+ 1381 00fd 18       		.uleb128 0x18
+ 1382 00fe 9742     		.uleb128 0x2117
+ 1383 0100 19       		.uleb128 0x19
+ 1384 0101 01       		.uleb128 0x1
+ 1385 0102 13       		.uleb128 0x13
+ 1386 0103 00       		.byte	0
+ 1387 0104 00       		.byte	0
+ 1388 0105 11       		.uleb128 0x11
+ 1389 0106 05       		.uleb128 0x5
+ 1390 0107 00       		.byte	0
+ 1391 0108 03       		.uleb128 0x3
+ 1392 0109 0E       		.uleb128 0xe
+ 1393 010a 3A       		.uleb128 0x3a
+ 1394 010b 0B       		.uleb128 0xb
+ 1395 010c 3B       		.uleb128 0x3b
+ 1396 010d 05       		.uleb128 0x5
+ 1397 010e 49       		.uleb128 0x49
+ 1398 010f 13       		.uleb128 0x13
+ 1399 0110 02       		.uleb128 0x2
+ 1400 0111 18       		.uleb128 0x18
+ 1401 0112 00       		.byte	0
+ 1402 0113 00       		.byte	0
+ 1403 0114 12       		.uleb128 0x12
+ 1404 0115 2E       		.uleb128 0x2e
+ 1405 0116 00       		.byte	0
+ 1406 0117 3F       		.uleb128 0x3f
+ 1407 0118 19       		.uleb128 0x19
+ 1408 0119 03       		.uleb128 0x3
+ 1409 011a 0E       		.uleb128 0xe
+ 1410 011b 3A       		.uleb128 0x3a
+ 1411 011c 0B       		.uleb128 0xb
+ 1412 011d 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 32
+
+
+ 1413 011e 05       		.uleb128 0x5
+ 1414 011f 27       		.uleb128 0x27
+ 1415 0120 19       		.uleb128 0x19
+ 1416 0121 49       		.uleb128 0x49
+ 1417 0122 13       		.uleb128 0x13
+ 1418 0123 11       		.uleb128 0x11
+ 1419 0124 01       		.uleb128 0x1
+ 1420 0125 12       		.uleb128 0x12
+ 1421 0126 06       		.uleb128 0x6
+ 1422 0127 40       		.uleb128 0x40
+ 1423 0128 18       		.uleb128 0x18
+ 1424 0129 9742     		.uleb128 0x2117
+ 1425 012b 19       		.uleb128 0x19
+ 1426 012c 00       		.byte	0
+ 1427 012d 00       		.byte	0
+ 1428 012e 13       		.uleb128 0x13
+ 1429 012f 2E       		.uleb128 0x2e
+ 1430 0130 01       		.byte	0x1
+ 1431 0131 3F       		.uleb128 0x3f
+ 1432 0132 19       		.uleb128 0x19
+ 1433 0133 03       		.uleb128 0x3
+ 1434 0134 0E       		.uleb128 0xe
+ 1435 0135 3A       		.uleb128 0x3a
+ 1436 0136 0B       		.uleb128 0xb
+ 1437 0137 3B       		.uleb128 0x3b
+ 1438 0138 05       		.uleb128 0x5
+ 1439 0139 27       		.uleb128 0x27
+ 1440 013a 19       		.uleb128 0x19
+ 1441 013b 49       		.uleb128 0x49
+ 1442 013c 13       		.uleb128 0x13
+ 1443 013d 11       		.uleb128 0x11
+ 1444 013e 01       		.uleb128 0x1
+ 1445 013f 12       		.uleb128 0x12
+ 1446 0140 06       		.uleb128 0x6
+ 1447 0141 40       		.uleb128 0x40
+ 1448 0142 18       		.uleb128 0x18
+ 1449 0143 9742     		.uleb128 0x2117
+ 1450 0145 19       		.uleb128 0x19
+ 1451 0146 01       		.uleb128 0x1
+ 1452 0147 13       		.uleb128 0x13
+ 1453 0148 00       		.byte	0
+ 1454 0149 00       		.byte	0
+ 1455 014a 14       		.uleb128 0x14
+ 1456 014b 05       		.uleb128 0x5
+ 1457 014c 00       		.byte	0
+ 1458 014d 03       		.uleb128 0x3
+ 1459 014e 0E       		.uleb128 0xe
+ 1460 014f 3A       		.uleb128 0x3a
+ 1461 0150 0B       		.uleb128 0xb
+ 1462 0151 3B       		.uleb128 0x3b
+ 1463 0152 05       		.uleb128 0x5
+ 1464 0153 49       		.uleb128 0x49
+ 1465 0154 13       		.uleb128 0x13
+ 1466 0155 02       		.uleb128 0x2
+ 1467 0156 17       		.uleb128 0x17
+ 1468 0157 00       		.byte	0
+ 1469 0158 00       		.byte	0
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 33
+
+
+ 1470 0159 15       		.uleb128 0x15
+ 1471 015a 2E       		.uleb128 0x2e
+ 1472 015b 01       		.byte	0x1
+ 1473 015c 3F       		.uleb128 0x3f
+ 1474 015d 19       		.uleb128 0x19
+ 1475 015e 03       		.uleb128 0x3
+ 1476 015f 0E       		.uleb128 0xe
+ 1477 0160 3A       		.uleb128 0x3a
+ 1478 0161 0B       		.uleb128 0xb
+ 1479 0162 3B       		.uleb128 0x3b
+ 1480 0163 05       		.uleb128 0x5
+ 1481 0164 27       		.uleb128 0x27
+ 1482 0165 19       		.uleb128 0x19
+ 1483 0166 49       		.uleb128 0x49
+ 1484 0167 13       		.uleb128 0x13
+ 1485 0168 8701     		.uleb128 0x87
+ 1486 016a 19       		.uleb128 0x19
+ 1487 016b 11       		.uleb128 0x11
+ 1488 016c 01       		.uleb128 0x1
+ 1489 016d 12       		.uleb128 0x12
+ 1490 016e 06       		.uleb128 0x6
+ 1491 016f 40       		.uleb128 0x40
+ 1492 0170 18       		.uleb128 0x18
+ 1493 0171 9742     		.uleb128 0x2117
+ 1494 0173 19       		.uleb128 0x19
+ 1495 0174 01       		.uleb128 0x1
+ 1496 0175 13       		.uleb128 0x13
+ 1497 0176 00       		.byte	0
+ 1498 0177 00       		.byte	0
+ 1499 0178 16       		.uleb128 0x16
+ 1500 0179 34       		.uleb128 0x34
+ 1501 017a 00       		.byte	0
+ 1502 017b 03       		.uleb128 0x3
+ 1503 017c 0E       		.uleb128 0xe
+ 1504 017d 3A       		.uleb128 0x3a
+ 1505 017e 0B       		.uleb128 0xb
+ 1506 017f 3B       		.uleb128 0x3b
+ 1507 0180 05       		.uleb128 0x5
+ 1508 0181 49       		.uleb128 0x49
+ 1509 0182 13       		.uleb128 0x13
+ 1510 0183 3F       		.uleb128 0x3f
+ 1511 0184 19       		.uleb128 0x19
+ 1512 0185 3C       		.uleb128 0x3c
+ 1513 0186 19       		.uleb128 0x19
+ 1514 0187 00       		.byte	0
+ 1515 0188 00       		.byte	0
+ 1516 0189 17       		.uleb128 0x17
+ 1517 018a 35       		.uleb128 0x35
+ 1518 018b 00       		.byte	0
+ 1519 018c 49       		.uleb128 0x49
+ 1520 018d 13       		.uleb128 0x13
+ 1521 018e 00       		.byte	0
+ 1522 018f 00       		.byte	0
+ 1523 0190 18       		.uleb128 0x18
+ 1524 0191 34       		.uleb128 0x34
+ 1525 0192 00       		.byte	0
+ 1526 0193 03       		.uleb128 0x3
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 34
+
+
+ 1527 0194 0E       		.uleb128 0xe
+ 1528 0195 3A       		.uleb128 0x3a
+ 1529 0196 0B       		.uleb128 0xb
+ 1530 0197 3B       		.uleb128 0x3b
+ 1531 0198 0B       		.uleb128 0xb
+ 1532 0199 49       		.uleb128 0x49
+ 1533 019a 13       		.uleb128 0x13
+ 1534 019b 3F       		.uleb128 0x3f
+ 1535 019c 19       		.uleb128 0x19
+ 1536 019d 02       		.uleb128 0x2
+ 1537 019e 18       		.uleb128 0x18
+ 1538 019f 00       		.byte	0
+ 1539 01a0 00       		.byte	0
+ 1540 01a1 19       		.uleb128 0x19
+ 1541 01a2 34       		.uleb128 0x34
+ 1542 01a3 00       		.byte	0
+ 1543 01a4 03       		.uleb128 0x3
+ 1544 01a5 0E       		.uleb128 0xe
+ 1545 01a6 3A       		.uleb128 0x3a
+ 1546 01a7 0B       		.uleb128 0xb
+ 1547 01a8 3B       		.uleb128 0x3b
+ 1548 01a9 05       		.uleb128 0x5
+ 1549 01aa 49       		.uleb128 0x49
+ 1550 01ab 13       		.uleb128 0x13
+ 1551 01ac 3F       		.uleb128 0x3f
+ 1552 01ad 19       		.uleb128 0x19
+ 1553 01ae 02       		.uleb128 0x2
+ 1554 01af 18       		.uleb128 0x18
+ 1555 01b0 00       		.byte	0
+ 1556 01b1 00       		.byte	0
+ 1557 01b2 1A       		.uleb128 0x1a
+ 1558 01b3 2E       		.uleb128 0x2e
+ 1559 01b4 00       		.byte	0
+ 1560 01b5 3F       		.uleb128 0x3f
+ 1561 01b6 19       		.uleb128 0x19
+ 1562 01b7 3C       		.uleb128 0x3c
+ 1563 01b8 19       		.uleb128 0x19
+ 1564 01b9 6E       		.uleb128 0x6e
+ 1565 01ba 0E       		.uleb128 0xe
+ 1566 01bb 03       		.uleb128 0x3
+ 1567 01bc 0E       		.uleb128 0xe
+ 1568 01bd 3A       		.uleb128 0x3a
+ 1569 01be 0B       		.uleb128 0xb
+ 1570 01bf 3B       		.uleb128 0x3b
+ 1571 01c0 0B       		.uleb128 0xb
+ 1572 01c1 00       		.byte	0
+ 1573 01c2 00       		.byte	0
+ 1574 01c3 00       		.byte	0
+ 1575              		.section	.debug_loc,"",%progbits
+ 1576              	.Ldebug_loc0:
+ 1577              	.LLST0:
+ 1578 0000 00000000 		.4byte	.LVL4
+ 1579 0004 08000000 		.4byte	.LVL5
+ 1580 0008 0100     		.2byte	0x1
+ 1581 000a 50       		.byte	0x50
+ 1582 000b 08000000 		.4byte	.LVL5
+ 1583 000f 0E000000 		.4byte	.LVL7
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 35
+
+
+ 1584 0013 0400     		.2byte	0x4
+ 1585 0015 F3       		.byte	0xf3
+ 1586 0016 01       		.uleb128 0x1
+ 1587 0017 50       		.byte	0x50
+ 1588 0018 9F       		.byte	0x9f
+ 1589 0019 0E000000 		.4byte	.LVL7
+ 1590 001d 13000000 		.4byte	.LVL8-1
+ 1591 0021 0100     		.2byte	0x1
+ 1592 0023 50       		.byte	0x50
+ 1593 0024 13000000 		.4byte	.LVL8-1
+ 1594 0028 16000000 		.4byte	.LFE68
+ 1595 002c 0400     		.2byte	0x4
+ 1596 002e F3       		.byte	0xf3
+ 1597 002f 01       		.uleb128 0x1
+ 1598 0030 50       		.byte	0x50
+ 1599 0031 9F       		.byte	0x9f
+ 1600 0032 00000000 		.4byte	0
+ 1601 0036 00000000 		.4byte	0
+ 1602              	.LLST1:
+ 1603 003a 00000000 		.4byte	.LVL9
+ 1604 003e 08000000 		.4byte	.LVL11
+ 1605 0042 0100     		.2byte	0x1
+ 1606 0044 50       		.byte	0x50
+ 1607 0045 08000000 		.4byte	.LVL11
+ 1608 0049 28000000 		.4byte	.LFE69
+ 1609 004d 0100     		.2byte	0x1
+ 1610 004f 55       		.byte	0x55
+ 1611 0050 00000000 		.4byte	0
+ 1612 0054 00000000 		.4byte	0
+ 1613              	.LLST2:
+ 1614 0058 04000000 		.4byte	.LVL10
+ 1615 005c 08000000 		.4byte	.LVL11
+ 1616 0060 0200     		.2byte	0x2
+ 1617 0062 30       		.byte	0x30
+ 1618 0063 9F       		.byte	0x9f
+ 1619 0064 08000000 		.4byte	.LVL11
+ 1620 0068 28000000 		.4byte	.LFE69
+ 1621 006c 0100     		.2byte	0x1
+ 1622 006e 54       		.byte	0x54
+ 1623 006f 00000000 		.4byte	0
+ 1624 0073 00000000 		.4byte	0
+ 1625              	.LLST3:
+ 1626 0077 00000000 		.4byte	.LVL19
+ 1627 007b 09000000 		.4byte	.LVL20-1
+ 1628 007f 0100     		.2byte	0x1
+ 1629 0081 50       		.byte	0x50
+ 1630 0082 09000000 		.4byte	.LVL20-1
+ 1631 0086 12000000 		.4byte	.LVL22
+ 1632 008a 0400     		.2byte	0x4
+ 1633 008c F3       		.byte	0xf3
+ 1634 008d 01       		.uleb128 0x1
+ 1635 008e 50       		.byte	0x50
+ 1636 008f 9F       		.byte	0x9f
+ 1637 0090 12000000 		.4byte	.LVL22
+ 1638 0094 17000000 		.4byte	.LVL23-1
+ 1639 0098 0100     		.2byte	0x1
+ 1640 009a 50       		.byte	0x50
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 36
+
+
+ 1641 009b 17000000 		.4byte	.LVL23-1
+ 1642 009f 20000000 		.4byte	.LFE73
+ 1643 00a3 0400     		.2byte	0x4
+ 1644 00a5 F3       		.byte	0xf3
+ 1645 00a6 01       		.uleb128 0x1
+ 1646 00a7 50       		.byte	0x50
+ 1647 00a8 9F       		.byte	0x9f
+ 1648 00a9 00000000 		.4byte	0
+ 1649 00ad 00000000 		.4byte	0
+ 1650              		.section	.debug_aranges,"",%progbits
+ 1651 0000 74000000 		.4byte	0x74
+ 1652 0004 0200     		.2byte	0x2
+ 1653 0006 00000000 		.4byte	.Ldebug_info0
+ 1654 000a 04       		.byte	0x4
+ 1655 000b 00       		.byte	0
+ 1656 000c 0000     		.2byte	0
+ 1657 000e 0000     		.2byte	0
+ 1658 0010 00000000 		.4byte	.LFB63
+ 1659 0014 16000000 		.4byte	.LFE63-.LFB63
+ 1660 0018 00000000 		.4byte	.LFB64
+ 1661 001c 0C000000 		.4byte	.LFE64-.LFB64
+ 1662 0020 00000000 		.4byte	.LFB65
+ 1663 0024 0C000000 		.4byte	.LFE65-.LFB65
+ 1664 0028 00000000 		.4byte	.LFB66
+ 1665 002c 0C000000 		.4byte	.LFE66-.LFB66
+ 1666 0030 00000000 		.4byte	.LFB67
+ 1667 0034 0C000000 		.4byte	.LFE67-.LFB67
+ 1668 0038 00000000 		.4byte	.LFB68
+ 1669 003c 16000000 		.4byte	.LFE68-.LFB68
+ 1670 0040 00000000 		.4byte	.LFB69
+ 1671 0044 28000000 		.4byte	.LFE69-.LFB69
+ 1672 0048 00000000 		.4byte	.LFB70
+ 1673 004c 0C000000 		.4byte	.LFE70-.LFB70
+ 1674 0050 00000000 		.4byte	.LFB71
+ 1675 0054 0C000000 		.4byte	.LFE71-.LFB71
+ 1676 0058 00000000 		.4byte	.LFB72
+ 1677 005c 20000000 		.4byte	.LFE72-.LFB72
+ 1678 0060 00000000 		.4byte	.LFB73
+ 1679 0064 20000000 		.4byte	.LFE73-.LFB73
+ 1680 0068 00000000 		.4byte	.LFB74
+ 1681 006c 94000000 		.4byte	.LFE74-.LFB74
+ 1682 0070 00000000 		.4byte	0
+ 1683 0074 00000000 		.4byte	0
+ 1684              		.section	.debug_ranges,"",%progbits
+ 1685              	.Ldebug_ranges0:
+ 1686 0000 00000000 		.4byte	.LFB63
+ 1687 0004 16000000 		.4byte	.LFE63
+ 1688 0008 00000000 		.4byte	.LFB64
+ 1689 000c 0C000000 		.4byte	.LFE64
+ 1690 0010 00000000 		.4byte	.LFB65
+ 1691 0014 0C000000 		.4byte	.LFE65
+ 1692 0018 00000000 		.4byte	.LFB66
+ 1693 001c 0C000000 		.4byte	.LFE66
+ 1694 0020 00000000 		.4byte	.LFB67
+ 1695 0024 0C000000 		.4byte	.LFE67
+ 1696 0028 00000000 		.4byte	.LFB68
+ 1697 002c 16000000 		.4byte	.LFE68
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 37
+
+
+ 1698 0030 00000000 		.4byte	.LFB69
+ 1699 0034 28000000 		.4byte	.LFE69
+ 1700 0038 00000000 		.4byte	.LFB70
+ 1701 003c 0C000000 		.4byte	.LFE70
+ 1702 0040 00000000 		.4byte	.LFB71
+ 1703 0044 0C000000 		.4byte	.LFE71
+ 1704 0048 00000000 		.4byte	.LFB72
+ 1705 004c 20000000 		.4byte	.LFE72
+ 1706 0050 00000000 		.4byte	.LFB73
+ 1707 0054 20000000 		.4byte	.LFE73
+ 1708 0058 00000000 		.4byte	.LFB74
+ 1709 005c 94000000 		.4byte	.LFE74
+ 1710 0060 00000000 		.4byte	0
+ 1711 0064 00000000 		.4byte	0
+ 1712              		.section	.debug_line,"",%progbits
+ 1713              	.Ldebug_line0:
+ 1714 0000 DA020000 		.section	.debug_str,"MS",%progbits,1
+ 1714      0200B301 
+ 1714      00000201 
+ 1714      FB0E0D00 
+ 1714      01010101 
+ 1715              	.LASF34:
+ 1716 0000 72656D70 		.ascii	"rempedaal_Read\000"
+ 1716      65646161 
+ 1716      6C5F5265 
+ 1716      616400
+ 1717              	.LASF28:
+ 1718 000f 53776974 		.ascii	"SwitchRearLights\000"
+ 1718      63685265 
+ 1718      61724C69 
+ 1718      67687473 
+ 1718      00
+ 1719              	.LASF33:
+ 1720 0020 76616C75 		.ascii	"value\000"
+ 1720      6500
+ 1721              	.LASF9:
+ 1722 0026 5F5F696E 		.ascii	"__int32_t\000"
+ 1722      7433325F 
+ 1722      7400
+ 1723              	.LASF23:
+ 1724 0030 64757261 		.ascii	"duration\000"
+ 1724      74696F6E 
+ 1724      00
+ 1725              	.LASF3:
+ 1726 0039 73686F72 		.ascii	"short unsigned int\000"
+ 1726      7420756E 
+ 1726      7369676E 
+ 1726      65642069 
+ 1726      6E7400
+ 1727              	.LASF38:
+ 1728 004c 61636874 		.ascii	"achterlicht_Write\000"
+ 1728      65726C69 
+ 1728      6368745F 
+ 1728      57726974 
+ 1728      6500
+ 1729              	.LASF17:
+ 1730 005e 53657442 		.ascii	"SetBrakeMode\000"
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 38
+
+
+ 1730      72616B65 
+ 1730      4D6F6465 
+ 1730      00
+ 1731              	.LASF45:
+ 1732 006b 433A5C55 		.ascii	"C:\\Users\\bernw\\Documents\\PSoC Creator\\Remlicht"
+ 1732      73657273 
+ 1732      5C626572 
+ 1732      6E775C44 
+ 1732      6F63756D 
+ 1733 0099 54656E74 		.ascii	"Tentamenv2\\RemlichtTentamenv2.cydsn\000"
+ 1733      616D656E 
+ 1733      76325C52 
+ 1733      656D6C69 
+ 1733      63687454 
+ 1734              	.LASF39:
+ 1735 00bd 50574D5F 		.ascii	"PWM_achterlicht_WriteCompare\000"
+ 1735      61636874 
+ 1735      65726C69 
+ 1735      6368745F 
+ 1735      57726974 
+ 1736              	.LASF11:
+ 1737 00da 666C6F61 		.ascii	"float\000"
+ 1737      7400
+ 1738              	.LASF1:
+ 1739 00e0 756E7369 		.ascii	"unsigned char\000"
+ 1739      676E6564 
+ 1739      20636861 
+ 1739      7200
+ 1740              	.LASF43:
+ 1741 00ee 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1741      43313120 
+ 1741      352E342E 
+ 1741      31203230 
+ 1741      31363036 
+ 1742 0121 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1742      20726576 
+ 1742      6973696F 
+ 1742      6E203233 
+ 1742      37373135 
+ 1743 0154 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1743      66756E63 
+ 1743      74696F6E 
+ 1743      2D736563 
+ 1743      74696F6E 
+ 1744              	.LASF31:
+ 1745 017c 6272616B 		.ascii	"brake_mode\000"
+ 1745      655F6D6F 
+ 1745      646500
+ 1746              	.LASF5:
+ 1747 0187 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1747      20756E73 
+ 1747      69676E65 
+ 1747      6420696E 
+ 1747      7400
+ 1748              	.LASF19:
+ 1749 0199 47657442 		.ascii	"GetButtonMode\000"
+ 1749      7574746F 
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 39
+
+
+ 1749      6E4D6F64 
+ 1749      6500
+ 1750              	.LASF27:
+ 1751 01a7 4461796C 		.ascii	"DaylightIsOn\000"
+ 1751      69676874 
+ 1751      49734F6E 
+ 1751      00
+ 1752              	.LASF29:
+ 1753 01b4 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1753      52784275 
+ 1753      66666572 
+ 1753      00
+ 1754              	.LASF37:
+ 1755 01c1 4144435F 		.ascii	"ADC_SAR_1_GetResult8\000"
+ 1755      5341525F 
+ 1755      315F4765 
+ 1755      74526573 
+ 1755      756C7438 
+ 1756              	.LASF12:
+ 1757 01d6 646F7562 		.ascii	"double\000"
+ 1757      6C6500
+ 1758              	.LASF25:
+ 1759 01dd 47657452 		.ascii	"GetRearMode\000"
+ 1759      6561724D 
+ 1759      6F646500 
+ 1760              	.LASF46:
+ 1761 01e9 6D61696E 		.ascii	"main\000"
+ 1761      00
+ 1762              	.LASF16:
+ 1763 01ee 53657442 		.ascii	"SetButtonMode\000"
+ 1763      7574746F 
+ 1763      6E4D6F64 
+ 1763      6500
+ 1764              	.LASF8:
+ 1765 01fc 756E7369 		.ascii	"unsigned int\000"
+ 1765      676E6564 
+ 1765      20696E74 
+ 1765      00
+ 1766              	.LASF7:
+ 1767 0209 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1767      206C6F6E 
+ 1767      6720756E 
+ 1767      7369676E 
+ 1767      65642069 
+ 1768              	.LASF21:
+ 1769 0220 53776974 		.ascii	"SwitchBrakeLights\000"
+ 1769      63684272 
+ 1769      616B654C 
+ 1769      69676874 
+ 1769      7300
+ 1770              	.LASF18:
+ 1771 0232 6D6F6465 		.ascii	"mode\000"
+ 1771      00
+ 1772              	.LASF40:
+ 1773 0237 50574D5F 		.ascii	"PWM_achterlicht_Start\000"
+ 1773      61636874 
+ 1773      65726C69 
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 40
+
+
+ 1773      6368745F 
+ 1773      53746172 
+ 1774              	.LASF30:
+ 1775 024d 62757474 		.ascii	"button_mode\000"
+ 1775      6F6E5F6D 
+ 1775      6F646500 
+ 1776              	.LASF10:
+ 1777 0259 696E7433 		.ascii	"int32_t\000"
+ 1777      325F7400 
+ 1778              	.LASF15:
+ 1779 0261 73697A65 		.ascii	"sizetype\000"
+ 1779      74797065 
+ 1779      00
+ 1780              	.LASF22:
+ 1781 026a 466C6173 		.ascii	"FlashBrakeLights\000"
+ 1781      68427261 
+ 1781      6B654C69 
+ 1781      67687473 
+ 1781      00
+ 1782              	.LASF6:
+ 1783 027b 6C6F6E67 		.ascii	"long long int\000"
+ 1783      206C6F6E 
+ 1783      6720696E 
+ 1783      7400
+ 1784              	.LASF44:
+ 1785 0289 6D61696E 		.ascii	"main.c\000"
+ 1785      2E6300
+ 1786              	.LASF13:
+ 1787 0290 63686172 		.ascii	"char\000"
+ 1787      00
+ 1788              	.LASF24:
+ 1789 0295 53657452 		.ascii	"SetRearMode\000"
+ 1789      6561724D 
+ 1789      6F646500 
+ 1790              	.LASF32:
+ 1791 02a1 72656172 		.ascii	"rear_mode\000"
+ 1791      5F6D6F64 
+ 1791      6500
+ 1792              	.LASF2:
+ 1793 02ab 73686F72 		.ascii	"short int\000"
+ 1793      7420696E 
+ 1793      7400
+ 1794              	.LASF35:
+ 1795 02b5 72656D6C 		.ascii	"remlicht_Write\000"
+ 1795      69636874 
+ 1795      5F577269 
+ 1795      746500
+ 1796              	.LASF26:
+ 1797 02c4 42757474 		.ascii	"ButtonIsPressed\000"
+ 1797      6F6E4973 
+ 1797      50726573 
+ 1797      73656400 
+ 1798              	.LASF4:
+ 1799 02d4 6C6F6E67 		.ascii	"long int\000"
+ 1799      20696E74 
+ 1799      00
+ 1800              	.LASF14:
+ARM GAS  C:\Users\bernw\AppData\Local\Temp\ccC7t2Sg.s 			page 41
+
+
+ 1801 02dd 6C6F6E67 		.ascii	"long double\000"
+ 1801      20646F75 
+ 1801      626C6500 
+ 1802              	.LASF0:
+ 1803 02e9 7369676E 		.ascii	"signed char\000"
+ 1803      65642063 
+ 1803      68617200 
+ 1804              	.LASF42:
+ 1805 02f5 4144435F 		.ascii	"ADC_SAR_1_Start\000"
+ 1805      5341525F 
+ 1805      315F5374 
+ 1805      61727400 
+ 1806              	.LASF20:
+ 1807 0305 47657442 		.ascii	"GetBrakeMode\000"
+ 1807      72616B65 
+ 1807      4D6F6465 
+ 1807      00
+ 1808              	.LASF36:
+ 1809 0312 43794465 		.ascii	"CyDelay\000"
+ 1809      6C617900 
+ 1810              	.LASF41:
+ 1811 031a 436C6F63 		.ascii	"Clock_achterlicht_Start\000"
+ 1811      6B5F6163 
+ 1811      68746572 
+ 1811      6C696368 
+ 1811      745F5374 
+ 1812              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
