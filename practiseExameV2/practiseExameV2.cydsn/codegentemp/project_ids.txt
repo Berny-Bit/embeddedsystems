@@ -1,0 +1,7 @@
+C:\Users\bernw\Documents\PSoC Creator\practiseExameV2\practiseExameV2.cydsn\practiseExameV2.cyprj|1cd6a30a-4878-4e06-baa1-f54e60038cae
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|3454236a-b20d-49c4-9238-96378a9f6e19
+C:\Users\bernw\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|138d99bd-b6e7-4358-a44d-807fa7c4036f
+C:\Users\bernw\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Downloads ( 4.1).cyprj|5efac93d-ae7a-43ba-bb23-f8bce0a1c48c
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|f81c62bf-9f06-4861-b050-9473548f03bb
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|49f7408b-8e7b-417b-bed3-84c98ad4521b
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|80c7dbe6-7e5f-4b2f-add1-54ee168cd2cb
